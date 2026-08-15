@@ -36,7 +36,12 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         guard let rootHandle = _rootHandle else { return result }
 
         // Pre-order traversal to preserve structure
-        var pending = Stack<(source: Store.Generational.Handle, parentHandle: Store.Generational.Handle?, parentKey: Key?)>()
+        var pending = Stack<
+            (
+                source: Store.Generational.Handle, parentHandle: Store.Generational.Handle?,
+                parentKey: Key?
+            )
+        >()
         pending.push((rootHandle, nil, nil))
 
         while let (sourceHandle, destParentHandle, key) = pending.pop() {
@@ -221,7 +226,9 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         let rootDest = result._insertNode(rootValue, parent: nil)
         result._rootHandle = rootDest
 
-        var pending = Stack<(source: Store.Generational.Handle, destParent: Store.Generational.Handle)>()
+        var pending = Stack<
+            (source: Store.Generational.Handle, destParent: Store.Generational.Handle)
+        >()
         pending.push((rootHandle, rootDest))
 
         while let (sourceHandle, destParentHandle) = pending.pop() {
