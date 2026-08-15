@@ -88,7 +88,10 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     ///   - keyPath: The sequence of keys from root to the target node.
     /// - Throws: ``Error/invalidPosition`` if the key path does not resolve to a node.
     @inlinable
-    public mutating func update(_ newValue: Value, at keyPath: some Swift.Sequence<Key>) throws(Self.Error) {
+    public mutating func update(
+        _ newValue: Value,
+        at keyPath: some Swift.Sequence<Key>
+    ) throws(Self.Error) {
         guard let pos = position(at: keyPath) else {
             throw .invalidPosition
         }

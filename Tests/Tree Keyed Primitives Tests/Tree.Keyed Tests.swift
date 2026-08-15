@@ -740,7 +740,8 @@ extension `Tree.Keyed Tests`.Unit {
     func `mapValues with recursivelyApply broadcasts value to all descendants`() throws {
         let tree = try makeGraphParityTree()
 
-        let result = tree.mapValues { (path: [String], value: Int) -> (Int, recursivelyApply: Bool) in
+        let result = tree.mapValues {
+            (path: [String], value: Int) -> (Int, recursivelyApply: Bool) in
             if path == ["a"] {
                 return (-1, recursivelyApply: true)
             }
@@ -787,7 +788,8 @@ extension `Tree.Keyed Tests`.Unit {
     func `compactMapValues with recursivelyApply broadcasts and filters`() throws {
         let tree = try makeGraphParityTree()
 
-        let result = tree.compactMapValues { (path: [String], value: Int) -> (Int, recursivelyApply: Bool)? in
+        let result = tree.compactMapValues {
+            (path: [String], value: Int) -> (Int, recursivelyApply: Bool)? in
             if path == ["b"] { return nil }  // Drop "b" subtree
             if path == ["a"] { return (99, recursivelyApply: true) }  // Broadcast to "a" subtree
             return (value, recursivelyApply: false)
@@ -895,7 +897,8 @@ extension `Tree.Keyed Tests`.Integration {
     func `mapValues async with recursivelyApply matches sync behavior`() async throws {
         let tree = try makeGraphParityTree()
 
-        let result = await tree.mapValues { (path: [String], value: Int) async -> (Int, recursivelyApply: Bool) in
+        let result = await tree.mapValues {
+            (path: [String], value: Int) async -> (Int, recursivelyApply: Bool) in
             if path == ["a"] {
                 return (-1, recursivelyApply: true)
             }
