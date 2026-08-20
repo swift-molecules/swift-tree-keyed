@@ -1,15 +1,15 @@
-// swift-tools-version: 6.3.3
+// swift-tools-version: 6.4
 
 import PackageDescription
 
 let package = Package(
     name: "swift-tree-keyed-primitives",
     platforms: [
-        .macOS("27"),
-        .iOS("27"),
-        .tvOS("27"),
-        .watchOS("27"),
-        .visionOS("27"),
+        .macOS(.v27),
+        .iOS(.v27),
+        .tvOS(.v27),
+        .watchOS(.v27),
+        .visionOS(.v27),
     ],
     products: [
         .library(
@@ -22,24 +22,75 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-primitives/swift-tree-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-index-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-dictionary-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-dictionary-ordered-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-hash-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-hash-table-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-column-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-ownership-shared-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-storage-generational-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-storage-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-buffer-ring-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-stack-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-queue-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-iterator-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-sequence-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-tree-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-dictionary-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-dictionary-ordered-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-hash-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-hash-table-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-column-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-ownership-shared-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-storage-generational-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-storage-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-buffer-ring-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-stack-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-queue-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-iterator-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-sequence-primitives.git",
+            branch: "main"
+        ),
         // R1 W4: forEach.child / forEach.path fluent accessors via Property<Tag,Base>.Borrow.
-        .package(url: "https://github.com/swift-primitives/swift-property-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-property-primitives.git",
+            branch: "main"
+        ),
     ],
     targets: [
 
@@ -51,15 +102,30 @@ let package = Package(
                 .product(name: "Tree Primitives", package: "swift-tree-primitives"),
                 .product(name: "Index Primitives", package: "swift-index-primitives"),
                 .product(name: "Dictionary Primitive", package: "swift-dictionary-primitives"),
-                .product(name: "Dictionary Ordered Primitive", package: "swift-dictionary-ordered-primitives"),
-                .product(name: "Dictionary Ordered Primitives", package: "swift-dictionary-ordered-primitives"),
+                .product(
+                    name: "Dictionary Ordered Primitive",
+                    package: "swift-dictionary-ordered-primitives"
+                ),
+                .product(
+                    name: "Dictionary Ordered Primitives",
+                    package: "swift-dictionary-ordered-primitives"
+                ),
                 .product(name: "Hash Primitives", package: "swift-hash-primitives"),
                 .product(name: "Hash Indexed Primitive", package: "swift-hash-table-primitives"),
                 .product(name: "Column Primitives", package: "swift-column-primitives"),
-                .product(name: "Ownership Shared Primitive", package: "swift-ownership-shared-primitives"),
-                .product(name: "Storage Generational Primitives", package: "swift-storage-generational-primitives"),
+                .product(
+                    name: "Ownership Shared Primitive",
+                    package: "swift-ownership-shared-primitives"
+                ),
+                .product(
+                    name: "Storage Generational Primitives",
+                    package: "swift-storage-generational-primitives"
+                ),
                 .product(name: "Store Primitive", package: "swift-storage-primitives"),
-                .product(name: "Buffer Linear Primitive", package: "swift-buffer-linear-primitives"),
+                .product(
+                    name: "Buffer Linear Primitive",
+                    package: "swift-buffer-linear-primitives"
+                ),
                 .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring-primitives"),
                 .product(name: "Stack Primitive", package: "swift-stack-primitives"),
                 .product(name: "Stack Primitives", package: "swift-stack-primitives"),
@@ -109,7 +175,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
     ]
 
     let package: [SwiftSetting] = [
-        .enableExperimentalFeature("RawLayout"),
+        .enableExperimentalFeature("RawLayout")
     ]
 
     target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
