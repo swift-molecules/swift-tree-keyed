@@ -3,8 +3,6 @@ import Tree_Primitives_Test_Support
 
 @testable import Tree_Keyed_Primitives
 
-// See Tree.Keyed Tests.swift: the keyed insert position is pinned explicitly because the
-// bare `.root` literal is ambiguous between the keyed and shared insert overloads.
 private typealias KeyedInsertPosition = Tree<Int>.Keyed<String>.Insert.Position
 
 @Suite
@@ -13,16 +11,6 @@ struct `Tree.Keyed.Diff Tests` {
     @Suite struct Integration {}
 }
 
-/// Builds a 3-level tree.
-///
-/// ```
-///   root(0)
-///   ├── a(1)
-///   │   ├── x(10)
-///   │   └── y(20)
-///   └── b(2)
-///       └── z(30)
-/// ```
 private func makeThreeLevelTree() throws -> Tree<Int>.Keyed<String> {
     var tree = Tree<Int>.Keyed<String>()
     let root = try tree.insert(0, at: KeyedInsertPosition.root)

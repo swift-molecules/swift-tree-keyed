@@ -1,30 +1,9 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 public import Storage_Generational_Primitives
 public import Store_Primitive
 public import Tree_Primitives
 
-// MARK: - Key Path Operations
-
 extension __Tree where S: __TreeKeyedStorage {
 
-    /// Reconstructs the key path from the root to the given position.
-    ///
-    /// Walks up the parent chain collecting `parentKey` values, then reverses.
-    ///
-    /// - Parameter position: The position of the node.
-    /// - Returns: The key path from root to node, or `nil` if position is invalid.
-    ///   Returns an empty array for the root node.
-    /// - Complexity: O(d) where d is the depth of the node.
     @inlinable
     public func keyPath(to position: Position) -> [Key]? {
         guard let handle = _liveHandle(position) else { return nil }
@@ -44,12 +23,6 @@ extension __Tree where S: __TreeKeyedStorage {
         return path
     }
 
-    /// Returns the position of the node at the given key path.
-    ///
-    /// - Parameter keyPath: The sequence of keys from root to the target node.
-    /// - Returns: The position of the node, or `nil` if any key in the path is not found
-    ///   or the tree is empty.
-    /// - Complexity: O(d) where d is the length of the key path.
     @inlinable
     public func position(at keyPath: some Swift.Sequence<Key>) -> Position? {
         guard let rootHandle = _rootHandle else { return nil }
@@ -66,27 +39,14 @@ extension __Tree where S: __TreeKeyedStorage {
     }
 }
 
-// MARK: - Key Path Operations (Copyable)
-
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
-    /// Returns the value at the given key path.
-    ///
-    /// - Parameter keyPath: The sequence of keys from root to the target node.
-    /// - Returns: The value at the key path, or `nil` if any key is not found.
-    /// - Complexity: O(d) where d is the length of the key path.
     @inlinable
     public func value(at keyPath: some Swift.Sequence<Key>) -> Value? {
         guard let pos = position(at: keyPath) else { return nil }
         return peek(at: pos)
     }
 
-    /// Replaces the value at the given key path.
-    ///
-    /// - Parameters:
-    ///   - newValue: The new value.
-    ///   - keyPath: The sequence of keys from root to the target node.
-    /// - Throws: ``Error/invalidPosition`` if the key path does not resolve to a node.
     @inlinable
     public mutating func update(
         _ newValue: Value,
@@ -98,21 +58,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         try update(at: pos, newValue)
     }
 
-    /// Inserts a value at the given key path, creating intermediate nodes as needed.
-    ///
-    /// If intermediate nodes along the path do not exist, they are created with
-    /// the value provided by `intermediateValue`. If the root does not exist,
-    /// it is created using `intermediateValue` with the first key.
-    ///
-    /// - Parameters:
-    ///   - value: The value to insert at the terminal key.
-    ///   - keyPath: The sequence of keys from root to the insertion point.
-    ///     Must be non-empty.
-    ///   - intermediateValue: A closure that provides values for intermediate nodes
-    ///     that need to be created. Called with the key of each intermediate node.
-    /// - Returns: The position of the newly inserted (or updated) node.
-    /// - Throws: Nothing today — the signature reserves the column's error type
-    ///   for future validating paths.
     @inlinable
     @discardableResult
     public mutating func insert(
@@ -122,7 +67,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     ) throws(Self.Error) -> Position {
         precondition(!keyPath.isEmpty, "Key path must not be empty")
 
-        // Ensure root exists; keep the handle local so no force-unwrap is needed.
         let rootHandle: Store.Generational.Handle
         if let existing = _rootHandle {
             rootHandle = existing
@@ -133,7 +77,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
         var currentHandle = rootHandle
 
-        // Walk down to the parent of the terminal node, creating intermediates
         for i in keyPath.indices.dropLast() {
             let key = keyPath[i]
             if let childHandle = _childHandle(of: currentHandle, key: key) {
@@ -145,9 +88,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
             }
         }
 
-        // Insert or update terminal node.
-        // WHY guard-let over `keyPath.last!`: the precondition above guarantees
-        // non-emptiness; the guard preserves that trap without a force-unwrap.
         guard let terminalKey = keyPath.last else {
             preconditionFailure("Key path must not be empty")
         }

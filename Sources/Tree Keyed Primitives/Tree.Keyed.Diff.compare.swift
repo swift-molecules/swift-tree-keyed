@@ -1,28 +1,5 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
-// `Equatable` no longer implies `Copyable` as of the 6.4 stdlib — this extension's
-// bodies call members requiring `Copyable` (`peek(at:)`, `_collectSubtree`), so the
-// constraint is explicit rather than redundant. See swift-tree-keyed-primitives#1.
 extension __Tree where S: __TreeKeyedStorage, S.Element: Equatable & Copyable {
-    /// Top-down keyed comparison — walks both trees in parallel by key.
-    ///
-    /// Produces a diff describing all structural and value changes between
-    /// `old` and `new`. The algorithm is O(n+m) where n and m are the node
-    /// counts of the two trees.
-    ///
-    /// - Parameters:
-    ///   - old: The reference tree.
-    ///   - new: The tree to compare against.
-    /// - Returns: A diff describing added, removed, and modified nodes.
+
     public static func diff(
         from old: borrowing Self,
         to new: borrowing Self
@@ -49,7 +26,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Equatable & Copyable {
             ) { operations.append(.removed(path: $0, value: $1)) }
 
         case (let oldRoot?, let newRoot?):
-            // Compare root values
+
             if let oldValue = old.peek(at: oldRoot),
                 let newValue = new.peek(at: newRoot),
                 oldValue != newValue
@@ -57,7 +34,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Equatable & Copyable {
                 operations.append(.modified(path: [], old: oldValue, new: newValue))
             }
 
-            // Iterative parallel walk
             var pending:
                 [(
                     oldPos: Position,
@@ -69,12 +45,11 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Equatable & Copyable {
                 let oldChildren = old.children(of: oldPos) ?? []
                 let newChildren = new.children(of: newPos) ?? []
 
-                // Process children present in old
                 for (key, oldChildPos) in oldChildren {
                     let childPath = path + [key]
 
                     if let newChildPos = new.child.at(key, of: newPos) {
-                        // Key in both trees — compare values, recurse
+
                         if let oldValue = old.peek(at: oldChildPos),
                             let newValue = new.peek(at: newChildPos),
                             oldValue != newValue
@@ -85,7 +60,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Equatable & Copyable {
                         }
                         pending.append((oldChildPos, newChildPos, childPath))
                     } else {
-                        // Key only in old — removed subtree
+
                         _collectSubtree(
                             of: old,
                             at: oldChildPos,
@@ -94,7 +69,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Equatable & Copyable {
                     }
                 }
 
-                // Process children present only in new
                 for (key, newChildPos) in newChildren {
                     if old.child.at(key, of: oldPos) == nil {
                         let childPath = path + [key]
@@ -112,10 +86,8 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Equatable & Copyable {
     }
 }
 
-// MARK: - Subtree Collection
-
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
-    /// Pre-order traversal of a subtree, emitting each node's path and value.
+
     @usableFromInline
     static func _collectSubtree(
         of tree: borrowing Self,
@@ -131,7 +103,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
             }
 
             if let children = tree.children(of: pos) {
-                // Push in reverse order so first child is processed first
+
                 for (key, childPos) in children.reversed() {
                     pending.append((childPos, currentPath + [key]))
                 }

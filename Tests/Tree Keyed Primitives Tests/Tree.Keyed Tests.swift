@@ -1,27 +1,10 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 import Sequence_Primitives
 import Testing
 import Tree_Primitives_Test_Support
 
 @testable import Tree_Keyed_Primitives
 
-// The bare `.root` literal is ambiguous at keyed insert sites: the keyed wrapper
-// (`Tree.Keyed.Insert.Position`, richer typed error) and the shared tree-core insert
-// (`Tree.InsertPosition`) both apply. The suites assert the KEYED error
-// (`__TreeKeyedError`), so they pin the keyed position type explicitly via its public path.
 private typealias KeyedInsertPosition = Tree<Int>.Keyed<String>.Insert.Position
-
-// MARK: - Tree.Keyed Tests (Parallel Namespace per [TEST-004])
 
 @Suite
 struct `Tree.Keyed Tests` {
@@ -31,11 +14,7 @@ struct `Tree.Keyed Tests` {
     @Suite(.serialized) struct Performance {}
 }
 
-// MARK: - Unit Tests
-
 extension `Tree.Keyed Tests`.Unit {
-
-    // MARK: - Initialization
 
     @Test
     func `empty tree has nil root and zero count`() {
@@ -45,8 +24,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.root == nil)
         #expect(tree.height == nil)
     }
-
-    // MARK: - Insert
 
     @Test
     func `insert root stores value and updates count`() throws {
@@ -72,8 +49,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.peek(at: left) == 1)
         #expect(tree.peek(at: right) == 2)
     }
-
-    // MARK: - Remove
 
     @Test
     func `remove leaf returns value and decrements count`() throws {
@@ -101,8 +76,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.child.at("a", of: root) == nil)
     }
 
-    // MARK: - Clear
-
     @Test
     func `clear empties tree and resets root`() throws {
         var tree = Tree<Int>.Keyed<String>()
@@ -115,8 +88,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.count == 0)
         #expect(tree.root == nil)
     }
-
-    // MARK: - Height
 
     @Test
     func `height increases with depth`() throws {
@@ -131,8 +102,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.height == 2)
     }
 
-    // MARK: - Update
-
     @Test
     func `update replaces value at position`() throws {
         var tree = Tree<Int>.Keyed<String>()
@@ -141,8 +110,6 @@ extension `Tree.Keyed Tests`.Unit {
         try tree.update(at: root, 99)
         #expect(tree.peek(at: root) == 99)
     }
-
-    // MARK: - Navigation
 
     @Test
     func `parent returns parent position or nil for root`() throws {
@@ -220,8 +187,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(values == [1, 2, 3])
     }
 
-    // MARK: - Key Path
-
     @Test
     func `keyPath reconstructs path from root to node`() throws {
         var tree = Tree<Int>.Keyed<String>()
@@ -297,8 +262,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.value(at: ["a"]) == 42)
     }
 
-    // MARK: - Traversal
-
     @Test
     func `forEachPreOrder visits nodes depth-first root-first`() throws {
         let tree = try makeTestTree()
@@ -350,8 +313,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(result == [0, 1, 2, 3, 4])
     }
 
-    // MARK: - MapValues
-
     @Test
     func `mapValues transforms all values preserving structure`() throws {
         var tree = Tree<Int>.Keyed<String>()
@@ -390,8 +351,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(mapped.value(at: ["a", "b"]) == "a/b:2")
     }
 
-    // MARK: - Error Descriptions
-
     @Test
     func `error descriptions are non-empty`() {
         let errors: [__TreeKeyedError<String>] = [
@@ -407,19 +366,8 @@ extension `Tree.Keyed Tests`.Unit {
     }
 }
 
-// MARK: - Helpers
-
 extension `Tree.Keyed Tests`.Unit {
 
-    /// Builds a test tree.
-    ///
-    /// ```
-    ///        0
-    ///       / \
-    ///      1   2
-    ///     / \
-    ///    3   4
-    /// ```
     private func makeTestTree() throws -> Tree<Int>.Keyed<String> {
         var tree = Tree<Int>.Keyed<String>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
@@ -430,8 +378,6 @@ extension `Tree.Keyed Tests`.Unit {
         return tree
     }
 }
-
-// MARK: - Edge Case Tests
 
 extension `Tree.Keyed Tests`.`Edge Case` {
 
@@ -479,13 +425,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
         #expect {
             try tree.remove(at: root)
         } throws: { error in
-            // `remove` is the shared `Tree.Protocol` default → throws the shared `__TreeError`
-            // (it carries no key, so it needs no keyed error refinement). Spelled via the
-            // dynamic front door's `Error` path (`Tree<Int>.Error` == `__TreeError` through
-            // the P4 flow-through alias + the dynamic column's default witness). Post-P4
-            // the keyed door's `Tree<Int>.Keyed<String>.Error` names `__TreeKeyedError` —
-            // the two doors' errors are now distinct by column substitution, so the shared
-            // error `remove` throws must be spelled through the dynamic door here.
+
             guard let e = error as? Tree<Int>.Error,
                 case .cannotRemoveNonLeaf = e
             else { return false }
@@ -561,8 +501,6 @@ extension `Tree.Keyed Tests`.`Edge Case` {
         #expect(filtered.isEmpty)
     }
 }
-
-// MARK: - Integration Tests
 
 extension `Tree.Keyed Tests`.Integration {
 
@@ -677,16 +615,6 @@ extension `Tree.Keyed Tests`.Integration {
     }
 }
 
-// MARK: - Graph-Parity API Tests
-
-// Shared fixture:
-//   root: 0
-//   ├── "a": 1
-//   │   ├── "x": 10
-//   │   └── "y": 11
-//   └── "b": 2
-//       └── "z": 20
-
 private func makeGraphParityTree() throws -> Tree<Int>.Keyed<String> {
     var tree = Tree<Int>.Keyed<String>()
     let root = try tree.insert(0, at: KeyedInsertPosition.root)
@@ -698,11 +626,7 @@ private func makeGraphParityTree() throws -> Tree<Int>.Keyed<String> {
     return tree
 }
 
-// MARK: - Unit Tests (Graph-Parity)
-
 extension `Tree.Keyed Tests`.Unit {
-
-    // MARK: forEach
 
     @Test
     func `forEach visits all nodes in pre-order with key paths`() throws {
@@ -733,8 +657,6 @@ extension `Tree.Keyed Tests`.Unit {
             }
         }
     }
-
-    // MARK: mapValues / compactMapValues
 
     @Test
     func `mapValues with recursivelyApply broadcasts value to all descendants`() throws {
@@ -780,7 +702,6 @@ extension `Tree.Keyed Tests`.Unit {
             value >= 10 ? value : nil
         }
 
-        // Root (0) is filtered → entire tree dropped
         #expect(result.isEmpty)
     }
 
@@ -790,8 +711,8 @@ extension `Tree.Keyed Tests`.Unit {
 
         let result = tree.compactMapValues {
             (path: [String], value: Int) -> (Int, recursivelyApply: Bool)? in
-            if path == ["b"] { return nil }  // Drop "b" subtree
-            if path == ["a"] { return (99, recursivelyApply: true) }  // Broadcast to "a" subtree
+            if path == ["b"] { return nil }
+            if path == ["a"] { return (99, recursivelyApply: true) }
             return (value, recursivelyApply: false)
         }
 
@@ -803,8 +724,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(result.value(at: ["b", "z"]) == nil)
     }
 
-    // MARK: values(along:)
-
     @Test
     func `values along yields values along valid key path`() throws {
         let tree = try makeGraphParityTree()
@@ -813,8 +732,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(result == [1, 10] as [Int?])
     }
 }
-
-// MARK: - Edge Case Tests (Graph-Parity)
 
 extension `Tree.Keyed Tests`.`Edge Case` {
 
@@ -832,7 +749,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
         let result = tree.mapValues { (path: [String], _: Int) -> (Int, recursivelyApply: Bool) in
             if path.isEmpty { return (-1, recursivelyApply: true) }
-            return (0, recursivelyApply: false)  // Never reached
+            return (0, recursivelyApply: false)
         }
 
         #expect(result.value(at: [] as [String]) == -1)
@@ -874,8 +791,6 @@ extension `Tree.Keyed Tests`.`Edge Case` {
     }
 }
 
-// MARK: - Integration Tests (Graph-Parity)
-
 extension `Tree.Keyed Tests`.Integration {
 
     @Test
@@ -914,11 +829,7 @@ extension `Tree.Keyed Tests`.Integration {
     }
 }
 
-// MARK: - Unit Tests (Structural APIs)
-
 extension `Tree.Keyed Tests`.Unit {
-
-    // MARK: init(rootValue:)
 
     @Test
     func `init with rootValue creates single-node tree`() {
@@ -928,8 +839,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.root != nil)
         #expect(tree.rootValue == 42)
     }
-
-    // MARK: rootValue
 
     @Test
     func `rootValue returns root value and nil for empty tree`() throws {
@@ -955,8 +864,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree.count == 1)
     }
 
-    // MARK: Subscripts
-
     @Test
     func `sparse subscript get returns value at key path`() throws {
         var tree = Tree<Int?>.Keyed<String>()
@@ -974,9 +881,9 @@ extension `Tree.Keyed Tests`.Unit {
         tree[["a", "b", "c"]] = 42
 
         #expect(tree[["a", "b", "c"]] == 42)
-        #expect(tree[["a"]] == nil)  // intermediate created with nil
-        #expect(tree[["a", "b"]] == nil)  // intermediate created with nil
-        #expect(tree.count == 4)  // root + a + b + c
+        #expect(tree[["a"]] == nil)
+        #expect(tree[["a", "b"]] == nil)
+        #expect(tree.count == 4)
     }
 
     @Test
@@ -989,8 +896,6 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(tree[["data"]] == [1, 2, 3, 4])
     }
 
-    // MARK: subtree
-
     @Test
     func `subtree extracts standalone copy of subtree`() throws {
         let tree = try makeGraphParityTree()
@@ -998,13 +903,11 @@ extension `Tree.Keyed Tests`.Unit {
         let sub = tree.subtree(at: ["a"])
         #expect(sub != nil)
         #expect(sub!.rootValue == 1)
-        #expect(sub!.count == 3)  // a(1), x(10), y(11)
+        #expect(sub!.count == 3)
         #expect(sub!.value(at: ["x"]) == 10)
         #expect(sub!.value(at: ["y"]) == 11)
     }
 }
-
-// MARK: - Edge Case Tests (Structural APIs)
 
 extension `Tree.Keyed Tests`.`Edge Case` {
 
@@ -1049,7 +952,6 @@ extension `Tree.Keyed Tests`.`Edge Case` {
         let snapshot = tree.children(of: root)!
         #expect(snapshot.count == 2)
 
-        // Mutate tree while iterating snapshot
         for (_, childPos) in snapshot {
             if let val = tree.peek(at: childPos) {
                 try tree.update(at: childPos, val * 10)
@@ -1061,27 +963,22 @@ extension `Tree.Keyed Tests`.`Edge Case` {
     }
 }
 
-// MARK: - Integration Tests (Structural APIs)
-
 extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `sparse graph workflow matches Graph usage pattern`() {
-        // Mimics swift-testing pattern: Graph<String, Test?>()
+
         var tree = Tree<String?>.Keyed<String>()
 
-        // Insert via sparse subscript (like graph[keyPath] = value)
         tree[["suite", "testA"]] = "test A"
         tree[["suite", "testB"]] = "test B"
         tree[["standalone"]] = "standalone"
 
-        // Read back
         #expect(tree[["suite", "testA"]] == "test A")
         #expect(tree[["suite", "testB"]] == "test B")
         #expect(tree[["standalone"]] == "standalone")
-        #expect(tree[["suite"]] == nil)  // intermediate has nil
+        #expect(tree[["suite"]] == nil)
 
-        // Optional chaining mutation (like graph[keyPath]?.mutate())
         tree[["suite", "testA"]]?.append(" (modified)")
         #expect(tree[["suite", "testA"]] == "test A (modified)")
     }
@@ -1090,50 +987,30 @@ extension `Tree.Keyed Tests`.Integration {
     func `subtree is independent of source tree mutations`() throws {
         var tree = try makeGraphParityTree()
 
-        // Extract subtree at "a"
         let sub = tree.subtree(at: ["a"])!
         #expect(sub.rootValue == 1)
         #expect(sub.value(at: ["x"]) == 10)
 
-        // Mutate source tree
         try tree.update(999, at: ["a"])
         try tree.update(888, at: ["a", "x"])
 
-        // Subtree is unchanged (independent copy)
         #expect(sub.rootValue == 1)
         #expect(sub.value(at: ["x"]) == 10)
 
-        // Source tree has new values
         #expect(tree.value(at: ["a"]) == 999)
         #expect(tree.value(at: ["a", "x"]) == 888)
     }
 }
 
-// MARK: - P4 per-instantiation Error resolution probe (S.Error flow-through)
-
 extension `Tree.Keyed Tests`.Unit {
 
-    /// Proves the P4 (2026-07-06, re-ruled) S.Error flow-through resolves the two doors'
-    /// errors DISTINCTLY by column substitution: the carrier's single
-    /// `Tree/Error = S.Error` alias forwards to the column's `__TreeStorage.Error`
-    /// witness — the dynamic column keeps the default (the shared `__TreeError`), the
-    /// keyed column pins `__TreeKeyedError<Key>`.
-    ///
-    /// Pre-fix, the unconstrained carrier
-    /// alias made `Tree<E>.Keyed<K>.Error` resolve to `__TreeError`; this probe would not
-    /// have compiled then (the keyed `.keyOccupied` case does not exist on `__TreeError`).
     @Test
     func `P4 Error flows from the column and resolves per instantiation`() {
-        // (1) Compile-time identity: the dynamic door's Error is the shared __TreeError
-        //     (the associatedtype DEFAULT witness).
+
         let _: __TreeError.Type = Tree<Int>.Error.self
-        // (2) Compile-time identity: the keyed door's Error is __TreeKeyedError<Key>
-        //     (the keyed column's explicit witness).
+
         let _: __TreeKeyedError<String>.Type = Tree<Int>.Keyed<String>.Error.self
 
-        // (3) The keyed .Error case set is the 4 keyed cases. `.keyOccupied` is UNIQUE to
-        //     the keyed error (the shared __TreeError has no such case), so this exhaustive
-        //     switch compiles only because the alias substituted to the keyed error.
         let keyed: Tree<Int>.Keyed<String>.Error = .keyOccupied("k")
         var matchedKeyOccupied = false
         switch keyed {
@@ -1145,7 +1022,6 @@ extension `Tree.Keyed Tests`.Unit {
         }
         #expect(matchedKeyOccupied)
 
-        // (4) Runtime metatype identity (belt-and-suspenders).
         #expect(Tree<Int>.Error.self == __TreeError.self)
         #expect(Tree<Int>.Keyed<String>.Error.self == __TreeKeyedError<String>.self)
     }

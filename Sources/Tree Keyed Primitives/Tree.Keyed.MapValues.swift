@@ -1,41 +1,14 @@
-// swift-format-ignore-file: AmbiguousTrailingClosureOverload
-//
-// The `mapValues(_:)` / `compactMapValues(_:)` families in this file are overload
-// sets distinguished by their closure PARAMETER SIGNATURES (value-only vs
-// key-path-aware, plain vs broadcast-tuple result, sync vs async) — the standard
-// throwing/parameter-shape overload family (P2b carve-out). swift-format's
-// syntactic check sees only the shared base name and flags every trailing-closure
-// overload; call sites resolve unambiguously on the closure's shape.
-//
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 public import Stack_Primitive
 public import Storage_Generational_Primitives
 public import Store_Primitive
 
-// MARK: - Map Values
-
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
-    /// Returns a new tree with the same structure but values transformed by the closure.
-    ///
-    /// - Parameter transform: A closure that maps each value to a new value.
-    /// - Returns: A tree with the same keys and structure, but transformed values.
     @inlinable
     public func mapValues<U>(_ transform: (Value) -> U) -> Tree<U>.Keyed<Key> {
         var result = Tree<U>.Keyed<Key>()
         guard let rootHandle = _rootHandle else { return result }
 
-        // Pre-order traversal to preserve structure
         var pending = Stack<
             (
                 source: Store.Generational.Handle, parentHandle: Store.Generational.Handle?,
@@ -49,15 +22,12 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
             let handle = result._insertNode(newValue, parent: destParentHandle)
 
-            // Invariant: `key` is non-nil exactly when `destParentHandle` is (both are
-            // pushed together for every non-root node).
             if let destParentHandle, let key {
                 result._linkChild(handle, to: destParentHandle, at: key)
             } else {
                 result._rootHandle = handle
             }
 
-            // Collect children in reverse for correct order
             let children = _children(of: sourceHandle)
             for i in (0..<children.count).reversed() {
                 pending.push((children[i].handle, handle, children[i].key))
@@ -67,15 +37,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         return result
     }
 
-    // MARK: - Map Values with Key Path
-
-    /// Returns a new tree with values transformed by a closure that receives the key path.
-    ///
-    /// Delegates to ``compactMapValues(_:)-4k9z`` per [IMPL-033].
-    ///
-    /// - Parameter transform: A closure that receives the key path and value, returning a new value.
-    /// - Returns: A tree with the same keys and structure, but transformed values.
-    /// - Throws: Whatever `transform` throws, propagated from the first failing node.
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> U
@@ -85,20 +46,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         }
     }
 
-    /// Returns a new tree with values transformed, optionally broadcasting the result
-    /// to all descendants.
-    ///
-    /// When the transform returns `recursivelyApply: true`, the transformed value
-    /// is assigned to the node and all its descendants without calling the transform
-    /// again. When the transform returns `recursivelyApply: false`, each descendant
-    /// is transformed independently.
-    ///
-    /// Delegates to ``compactMapValues(_:)-8r2v`` per [IMPL-033].
-    ///
-    /// - Parameter transform: A closure that receives the key path and value,
-    ///   returning the new value and whether to broadcast it to descendants.
-    /// - Returns: A tree with the same keys and structure, but transformed values.
-    /// - Throws: Whatever `transform` throws, propagated from the first failing node.
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> (U, recursivelyApply: Bool)
@@ -108,20 +55,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         }
     }
 
-    // MARK: - Compact Map Values with Key Path
-
-    /// Returns a new tree with values optionally transformed, removing nodes where
-    /// the transform returns nil.
-    ///
-    /// The key path from root to each node is provided.
-    /// When a node's transform returns nil, the node and its entire subtree are dropped.
-    ///
-    /// Delegates to ``compactMapValues(_:)-8r2v`` per [IMPL-033].
-    ///
-    /// - Parameter transform: A closure that receives the key path and value,
-    ///   returning the new value or nil to drop the subtree.
-    /// - Returns: A tree with transformed values, minus pruned subtrees.
-    /// - Throws: Whatever `transform` throws, propagated from the first failing node.
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> U?
@@ -131,21 +64,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         }
     }
 
-    /// Returns a new tree with values optionally transformed, with optional broadcasting
-    /// to descendants.
-    ///
-    /// This is the core tree-transform primitive. All other key-path-aware
-    /// `mapValues` and `compactMapValues` variants delegate to this method.
-    ///
-    /// When the transform returns `recursivelyApply: true`, the value is broadcast
-    /// to all descendants without calling the transform for each. When the transform
-    /// returns nil, the node and its entire subtree are dropped.
-    ///
-    /// - Parameter transform: A closure that receives the key path and value,
-    ///   returning the new value and broadcast flag, or nil to drop the subtree.
-    /// - Returns: A tree with transformed values, minus pruned subtrees.
-    /// - Throws: Whatever `transform` throws, propagated from the first failing node.
-    /// - Complexity: O(n) where n is the number of nodes in the source tree.
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> (U, recursivelyApply: Bool)?
@@ -181,8 +99,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
             let handle = result._insertNode(newValue, parent: destParentHandle)
 
-            // Invariant: `key` is non-nil exactly when `destParentHandle` is (both are
-            // pushed together for every non-root node).
             if let destParentHandle, let key {
                 result._linkChild(handle, to: destParentHandle, at: key)
             } else {
@@ -208,14 +124,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         return result
     }
 
-    // MARK: - Compact Map Values (Simple)
-
-    /// Returns a new tree with values optionally transformed, removing nodes where the transform returns nil.
-    ///
-    /// When a non-leaf node's transform returns nil, its entire subtree is removed.
-    ///
-    /// - Parameter transform: A closure that optionally transforms each value.
-    /// - Returns: A tree with transformed values, minus pruned subtrees.
     @inlinable
     public func compactMapValues<U>(_ transform: (Value) -> U?) -> Tree<U>.Keyed<Key> {
         var result = Tree<U>.Keyed<Key>()
@@ -246,11 +154,8 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     }
 }
 
-// MARK: - Map Values (Async)
-
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
-    /// Async variant of ``mapValues(_:)-2g7k``.
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> U
@@ -260,7 +165,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         }
     }
 
-    /// Async variant of ``mapValues(_:)-5h3r``.
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> (U, recursivelyApply: Bool)
@@ -270,7 +174,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         }
     }
 
-    /// Async variant of ``compactMapValues(_:)-4k9z``.
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> U?
@@ -280,7 +183,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
         }
     }
 
-    /// Async variant of ``compactMapValues(_:)-8r2v``.
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> (U, recursivelyApply: Bool)?
@@ -316,8 +218,6 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
             let handle = result._insertNode(newValue, parent: destParentHandle)
 
-            // Invariant: `key` is non-nil exactly when `destParentHandle` is (both are
-            // pushed together for every non-root node).
             if let destParentHandle, let key {
                 result._linkChild(handle, to: destParentHandle, at: key)
             } else {

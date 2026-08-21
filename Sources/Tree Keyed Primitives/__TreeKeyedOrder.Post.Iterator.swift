@@ -1,14 +1,3 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 internal import Iterator_Primitive
 internal import Iterator_Protocol
 public import Stack_Primitive
@@ -19,15 +8,6 @@ public import Tree_Primitives
 
 extension __TreeKeyedOrder.Post {
 
-    /// An iterator for post-order traversal (children in insertion order, then root).
-    ///
-    /// Uses a two-stack approach: first builds reverse post-order via pre-order,
-    /// then yields values in the correct order.
-    ///
-    /// Move-only (`~Copyable`): the traversal scratch is the canonical direct
-    /// `Stack<Handle>`, which is move-only regardless of element (the W2 stack reshape);
-    /// the whole `Iterator.Protocol` / `Iterable` / `Materializing` machinery suppresses
-    /// `~Copyable`, so the iterator rides it without a CoW column (seat D3 ruling (a)).
     public struct Iterator<S: __TreeKeyedStorage>: ~Copyable, Iterator_Primitive.Iterator.`Protocol`
     where S.Element: Copyable {
         @usableFromInline
@@ -41,7 +21,6 @@ extension __TreeKeyedOrder.Post {
             self.tree = tree
             self.output = Stack<Store.Generational.Handle>()
 
-            // Build reverse post-order via pre-order traversal
             var pending = Stack<Store.Generational.Handle>()
             if let rootHandle = tree._rootHandle {
                 pending.push(rootHandle)
@@ -56,8 +35,6 @@ extension __TreeKeyedOrder.Post {
             }
         }
 
-        /// Advances to the next node in post-order (children before parent), or
-        /// returns `nil` when traversal is exhausted.
         @inlinable
         public mutating func next() -> S.Element? {
             guard let handle = output.pop() else { return nil }

@@ -1,50 +1,26 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 public import Stack_Primitive
 public import Storage_Generational_Primitives
 public import Store_Primitive
 import Tree_Primitives
 
-// MARK: - Prune
-
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
-    /// Removes all subtrees rooted at nodes where the predicate returns true.
-    ///
-    /// Traverses the tree in post-order. When the predicate returns true for a
-    /// node, that node and its entire subtree are removed. Surviving branches
-    /// are left intact.
-    ///
-    /// - Parameter shouldRemove: A closure that returns true for nodes to prune.
     @inlinable
     public mutating func prune(where shouldRemove: (Value) -> Bool) {
         guard let rootHandle = _rootHandle else { return }
 
-        // Check root first
         if shouldRemove(_value(of: rootHandle)) {
-            // Remove entire tree
+
             if let root = self.root {
                 do throws(__TreeError) {
                     try removeSubtree(at: root)
                 } catch {
-                    // Fire-and-forget: `root` was just minted from the live root
-                    // handle, so the only failure mode (invalid position) is
-                    // unreachable; pruning is best-effort by contract.
+
                 }
             }
             return
         }
 
-        // Collect nodes to prune via pre-order traversal
         var toPrune: [(parentHandle: Store.Generational.Handle, key: Key)] = []
         var pending = Stack<Store.Generational.Handle>()
         pending.push(rootHandle)
@@ -59,17 +35,12 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
             }
         }
 
-        // Remove pruned subtrees (in reverse to avoid invalidation issues). The
-        // shared `removeSubtree` default unlinks the child (O(1) via its back-key)
-        // and frees the subtree post-order.
         for (parentHandle, key) in toPrune.reversed() {
             guard let childHandle = _childHandle(of: parentHandle, key: key) else { continue }
             do throws(__TreeError) {
                 try removeSubtree(at: _position(of: childHandle))
             } catch {
-                // Fire-and-forget: the position was just minted from a live child
-                // handle, so the only failure mode (invalid position) is
-                // unreachable; pruning is best-effort by contract.
+
             }
         }
     }

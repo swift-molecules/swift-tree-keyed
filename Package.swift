@@ -86,7 +86,7 @@ let package = Package(
             url: "https://github.com/swift-primitives/swift-sequence-primitives.git",
             branch: "main"
         ),
-        // R1 W4: forEach.child / forEach.path fluent accessors via Property<Tag,Base>.Borrow.
+
         .package(
             url: "https://github.com/swift-primitives/swift-property-primitives.git",
             branch: "main"
@@ -94,8 +94,6 @@ let package = Package(
     ],
     targets: [
 
-        // MARK: - Tree Keyed (hash-indexed tree discipline; dictionary-backed,
-        //         generational-column node storage)
         .target(
             name: "Tree Keyed Primitives",
             dependencies: [
@@ -138,7 +136,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Test Support ([MOD-024] spine)
         .target(
             name: "Tree Keyed Primitives Test Support",
             dependencies: [
@@ -148,7 +145,6 @@ let package = Package(
             path: "Tests/Support"
         ),
 
-        // MARK: - Tests
         .testTarget(
             name: "Tree Keyed Primitives Tests",
             dependencies: [
