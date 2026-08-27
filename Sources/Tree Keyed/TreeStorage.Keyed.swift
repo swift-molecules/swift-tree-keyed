@@ -1,11 +1,11 @@
-public import Dictionary_Ordered_Primitives
+public import Dictionary_Ordered
 public import Dictionary_Primitive
 public import Hash_Indexed_Primitive
-public import Hash_Primitives
-public import Index_Primitives
-public import Storage_Generational_Primitives
+public import Hash
+public import Index
+public import Storage_Generational
 public import Store_Primitive
-public import Tree_Primitives
+public import Tree
 
 extension TreeStorage {
 
@@ -176,7 +176,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element: ~Copyable, Key: Hash.`Protocol`>(
-        minimumCapacity: Index_Primitives.Index<Element>.Count
+        minimumCapacity: Index.Index<Element>.Count
     ) where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>(minimumCapacity: minimumCapacity))
     }
@@ -189,7 +189,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element, Key: Hash.`Protocol`>(
-        minimumCapacity: Index_Primitives.Index<Element>.Count
+        minimumCapacity: Index.Index<Element>.Count
     ) where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>(minimumCapacity: minimumCapacity))
     }

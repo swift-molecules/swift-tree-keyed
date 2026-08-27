@@ -1,12 +1,12 @@
 public import Buffer_Ring_Primitive
-public import Column_Primitives
+public import Column
 internal import Iterator_Primitive
 internal import Iterator_Protocol
 public import Ownership_Shared_Primitive
-public import Queue_Primitives
-public import Storage_Generational_Primitives
+public import Queue
+public import Storage_Generational
 public import Store_Primitive
-public import Tree_Primitives
+public import Tree
 
 extension __TreeKeyedOrder.Level {
 

@@ -1,10 +1,10 @@
 internal import Iterator_Primitive
 internal import Iterator_Protocol
 public import Stack_Primitive
-internal import Stack_Primitives
-public import Storage_Generational_Primitives
+internal import Stack
+public import Storage_Generational
 public import Store_Primitive
-public import Tree_Primitives
+public import Tree
 
 extension __TreeKeyedOrder.Post {
 

@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-tree-keyed-primitives",
+    name: "swift-tree-keyed",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -13,143 +13,143 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Tree Keyed Primitives",
-            targets: ["Tree Keyed Primitives"]
+            name: "Tree Keyed",
+            targets: ["Tree Keyed"]
         ),
         .library(
-            name: "Tree Keyed Primitives Test Support",
-            targets: ["Tree Keyed Primitives Test Support"]
+            name: "Tree Keyed Test Support",
+            targets: ["Tree Keyed Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-tree-primitives.git",
+            url: "https://github.com/swift-molecules/swift-tree.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            url: "https://github.com/swift-molecules/swift-index.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-dictionary-primitives.git",
+            url: "https://github.com/swift-molecules/swift-dictionary.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-dictionary-ordered-primitives.git",
+            url: "https://github.com/swift-molecules/swift-dictionary-ordered.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-hash-primitives.git",
+            url: "https://github.com/swift-molecules/swift-hash.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-hash-table-primitives.git",
+            url: "https://github.com/swift-molecules/swift-hash-table.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-column-primitives.git",
+            url: "https://github.com/swift-molecules/swift-column.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-ownership-shared-primitives.git",
+            url: "https://github.com/swift-molecules/swift-ownership-shared.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-storage-generational-primitives.git",
+            url: "https://github.com/swift-molecules/swift-storage-generational.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-storage-primitives.git",
+            url: "https://github.com/swift-molecules/swift-storage.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git",
+            url: "https://github.com/swift-molecules/swift-buffer-linear.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-buffer-ring-primitives.git",
+            url: "https://github.com/swift-molecules/swift-buffer-ring.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-stack-primitives.git",
+            url: "https://github.com/swift-molecules/swift-stack.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-queue-primitives.git",
+            url: "https://github.com/swift-molecules/swift-queue.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-iterator-primitives.git",
+            url: "https://github.com/swift-molecules/swift-iterator.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-sequence-primitives.git",
+            url: "https://github.com/swift-molecules/swift-sequence.git",
             branch: "main"
         ),
 
         .package(
-            url: "https://github.com/swift-primitives/swift-property-primitives.git",
+            url: "https://github.com/swift-molecules/swift-property.git",
             branch: "main"
         ),
     ],
     targets: [
 
         .target(
-            name: "Tree Keyed Primitives",
+            name: "Tree Keyed",
             dependencies: [
-                .product(name: "Tree Primitives", package: "swift-tree-primitives"),
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Dictionary Primitive", package: "swift-dictionary-primitives"),
+                .product(name: "Tree", package: "swift-tree"),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Dictionary Primitive", package: "swift-dictionary"),
                 .product(
                     name: "Dictionary Ordered Primitive",
-                    package: "swift-dictionary-ordered-primitives"
+                    package: "swift-dictionary-ordered"
                 ),
                 .product(
-                    name: "Dictionary Ordered Primitives",
-                    package: "swift-dictionary-ordered-primitives"
+                    name: "Dictionary Ordered",
+                    package: "swift-dictionary-ordered"
                 ),
-                .product(name: "Hash Primitives", package: "swift-hash-primitives"),
-                .product(name: "Hash Indexed Primitive", package: "swift-hash-table-primitives"),
-                .product(name: "Column Primitives", package: "swift-column-primitives"),
+                .product(name: "Hash", package: "swift-hash"),
+                .product(name: "Hash Indexed Primitive", package: "swift-hash-table"),
+                .product(name: "Column", package: "swift-column"),
                 .product(
                     name: "Ownership Shared Primitive",
-                    package: "swift-ownership-shared-primitives"
+                    package: "swift-ownership-shared"
                 ),
                 .product(
-                    name: "Storage Generational Primitives",
-                    package: "swift-storage-generational-primitives"
+                    name: "Storage Generational",
+                    package: "swift-storage-generational"
                 ),
-                .product(name: "Store Primitive", package: "swift-storage-primitives"),
+                .product(name: "Store Primitive", package: "swift-storage"),
                 .product(
                     name: "Buffer Linear Primitive",
-                    package: "swift-buffer-linear-primitives"
+                    package: "swift-buffer-linear"
                 ),
-                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring-primitives"),
-                .product(name: "Stack Primitive", package: "swift-stack-primitives"),
-                .product(name: "Stack Primitives", package: "swift-stack-primitives"),
-                .product(name: "Queue Primitives", package: "swift-queue-primitives"),
-                .product(name: "Iterator Protocol", package: "swift-iterator-primitives"),
-                .product(name: "Iterator Chunk Primitives", package: "swift-iterator-primitives"),
-                .product(name: "Iterable", package: "swift-iterator-primitives"),
-                .product(name: "Sequence Primitives", package: "swift-sequence-primitives"),
-                .product(name: "Property Primitives", package: "swift-property-primitives"),
+                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring"),
+                .product(name: "Stack Primitive", package: "swift-stack"),
+                .product(name: "Stack", package: "swift-stack"),
+                .product(name: "Queue", package: "swift-queue"),
+                .product(name: "Iterator Protocol", package: "swift-iterator"),
+                .product(name: "Iterator Chunk", package: "swift-iterator"),
+                .product(name: "Iterable", package: "swift-iterator"),
+                .product(name: "Sequence", package: "swift-sequence"),
+                .product(name: "Property", package: "swift-property"),
             ]
         ),
 
         .target(
-            name: "Tree Keyed Primitives Test Support",
+            name: "Tree Keyed Test Support",
             dependencies: [
-                "Tree Keyed Primitives",
-                .product(name: "Tree Primitives Test Support", package: "swift-tree-primitives"),
+                "Tree Keyed",
+                .product(name: "Tree Test Support", package: "swift-tree"),
             ],
             path: "Tests/Support"
         ),
 
         .testTarget(
-            name: "Tree Keyed Primitives Tests",
+            name: "Tree Keyed Tests",
             dependencies: [
-                "Tree Keyed Primitives",
-                "Tree Keyed Primitives Test Support",
+                "Tree Keyed",
+                "Tree Keyed Test Support",
             ]
         ),
     ],

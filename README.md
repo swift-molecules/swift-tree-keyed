@@ -1,4 +1,4 @@
-# Tree Keyed Primitives
+# Tree Keyed
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -9,7 +9,7 @@ The **keyed tree discipline** over the `Tree` namespace: arena-backed, dictionar
 ## Quick Start
 
 ```swift
-import Tree_Keyed_Primitives
+import Tree_Keyed
 
 // Build a small file-system-like hierarchy.
 var tree = Tree<String>.Keyed<String>()
@@ -37,7 +37,7 @@ let preview = tree.peek(at: work)                    // "Work"
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-tree-keyed-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-tree-keyed.git", branch: "main")
 ]
 ```
 
@@ -45,7 +45,7 @@ dependencies: [
 .target(
     name: "App",
     dependencies: [
-        .product(name: "Tree Keyed Primitives", package: "swift-tree-keyed-primitives"),
+        .product(name: "Tree Keyed", package: "swift-tree-keyed"),
     ]
 )
 ```
@@ -72,9 +72,9 @@ and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the matching Linu
 
 ## Related Packages
 
-- `swift-tree-primitives` — the `Tree` namespace, `Tree.Position`, and traversal vocabulary that `Tree.Keyed` builds on
-- `swift-buffer-arena-primitives` — the arena storage substrate used internally for node allocation and recycling
-- `swift-dictionary-primitives` — the `Dictionary` namespace used for keyed child storage
+- `swift-tree` — the `Tree` namespace, `Tree.Position`, and traversal vocabulary that `Tree.Keyed` builds on
+- `swift-storage-generational` — the arena storage substrate used internally for node allocation and recycling
+- `swift-dictionary` — the `Dictionary` namespace used for keyed child storage
 
 ---
 

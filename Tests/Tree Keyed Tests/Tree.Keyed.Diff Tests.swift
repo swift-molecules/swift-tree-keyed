@@ -1,7 +1,7 @@
 import Testing
-import Tree_Primitives_Test_Support
+import Tree_Test_Support
 
-@testable import Tree_Keyed_Primitives
+@testable import Tree_Keyed
 
 private typealias KeyedInsertPosition = Tree<Int>.Keyed<String>.Insert.Position
 

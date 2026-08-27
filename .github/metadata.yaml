@@ -1,7 +1,7 @@
 # .github/metadata.yaml
 description: "Arena-backed, dictionary-keyed tree storage with O(1) child lookup, token-validated positions, and structural diffing for Swift."
 topics:
-  - primitives
+  - molecules
   - tree
 homepage: "https://swift-institute.org"
 readme:

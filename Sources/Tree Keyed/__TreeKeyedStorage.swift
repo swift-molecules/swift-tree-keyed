@@ -1,7 +1,7 @@
-public import Hash_Primitives
-public import Storage_Generational_Primitives
+public import Hash
+public import Storage_Generational
 public import Store_Primitive
-public import Tree_Primitives
+public import Tree
 
 public protocol __TreeKeyedStorage: __TreeStorage
 where Address: Hash.`Protocol`, Error == __TreeKeyedError<Address> {

@@ -1,5 +1,5 @@
 public import Stack_Primitive
-public import Storage_Generational_Primitives
+public import Storage_Generational
 public import Store_Primitive
 
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {

@@ -1,5 +1,5 @@
-public import Hash_Primitives
-public import Tree_Primitives
+public import Hash
+public import Tree
 
 extension __Tree where S: ~Copyable, S: __TreeStorage {
 

@@ -1,8 +1,8 @@
 public import Iterable
-public import Iterator_Chunk_Primitives
+public import Iterator_Chunk
 public import Iterator_Primitive
-public import Sequence_Primitives
-public import Tree_Primitives
+public import Sequence
+public import Tree
 
 extension __TreeKeyedOrder.Level {
 
