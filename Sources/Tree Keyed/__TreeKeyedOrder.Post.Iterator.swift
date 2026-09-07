@@ -1,5 +1,5 @@
 internal import Iterator_Primitive
-internal import Iterator_Protocol
+internal import Iterator
 public import Stack_Primitive
 internal import Stack
 public import Storage_Generational

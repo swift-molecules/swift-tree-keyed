@@ -1,7 +1,7 @@
 public import Buffer_Ring_Primitive
 public import Column
 internal import Iterator_Primitive
-internal import Iterator_Protocol
+internal import Iterator
 public import Ownership_Shared_Primitive
 public import Queue
 public import Storage_Generational

@@ -1,5 +1,4 @@
-public import Iterable
-public import Iterator_Chunk
+public import Iterator
 public import Iterator_Primitive
 public import Sequence
 public import Tree

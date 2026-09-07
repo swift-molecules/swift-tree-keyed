@@ -128,9 +128,7 @@ let package = Package(
                 .product(name: "Stack Primitive", package: "swift-stack"),
                 .product(name: "Stack", package: "swift-stack"),
                 .product(name: "Queue", package: "swift-queue"),
-                .product(name: "Iterator Protocol", package: "swift-iterator"),
-                .product(name: "Iterator Chunk", package: "swift-iterator"),
-                .product(name: "Iterable", package: "swift-iterator"),
+                .product(name: "Iterator", package: "swift-iterator"),
                 .product(name: "Sequence", package: "swift-sequence"),
                 .product(name: "Property", package: "swift-property"),
             ]
