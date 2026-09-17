@@ -1,6 +1,6 @@
 public import Tree
 
-public enum __TreeKeyedInsert<Key: Hash.`Protocol`> {
+public enum __TreeKeyedInsert<Key: Swift.Hashable> {
 
     public typealias Position = __TreeKeyedInsertPosition<Key>
 }

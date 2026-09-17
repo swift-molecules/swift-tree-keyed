@@ -4,7 +4,6 @@
 @_exported public import Dictionary_Ordered
 @_exported public import Dictionary_Primitive
 @_exported public import Hash_Indexed_Primitive
-@_exported public import Hash
 @_exported public import Ownership_Shared_Primitive
 @_exported public import Storage_Generational
 @_exported public import Store_Primitive

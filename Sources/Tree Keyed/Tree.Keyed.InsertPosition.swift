@@ -1,4 +1,4 @@
-public enum __TreeKeyedInsertPosition<Key: Hash.`Protocol`> {
+public enum __TreeKeyedInsertPosition<Key: Swift.Hashable> {
 
     case root
 

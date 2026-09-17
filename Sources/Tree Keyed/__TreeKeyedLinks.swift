@@ -7,7 +7,7 @@ public import Storage_Generational
 public import Store_Primitive
 
 @usableFromInline
-struct __TreeKeyedLinks<Key: Hash.`Protocol`> {
+struct __TreeKeyedLinks<Key: Swift.Hashable> {
 
     @usableFromInline
     typealias Children = __DictionaryOrdered<

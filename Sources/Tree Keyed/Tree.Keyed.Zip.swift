@@ -3,7 +3,7 @@ public import Storage_Generational
 public import Store_Primitive
 
 @inlinable
-public func zip<Key: Hash.`Protocol`, A: Copyable, B: Copyable>(
+public func zip<Key: Swift.Hashable, A: Copyable, B: Copyable>(
     _ lhs: Tree<A>.Keyed<Key>,
     _ rhs: Tree<B>.Keyed<Key>
 ) -> Tree<(A, B)>.Keyed<Key> {

@@ -1,4 +1,4 @@
-public enum __TreeKeyedError<Key: Hash.`Protocol`>: Swift.Error {
+public enum __TreeKeyedError<Key: Swift.Hashable>: Swift.Error {
 
     case invalidPosition
 
