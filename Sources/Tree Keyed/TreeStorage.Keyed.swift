@@ -1,9 +1,9 @@
 public import Dictionary_Ordered
-public import Dictionary_Primitive
+public import Dictionary
 public import Hash_Indexed_Primitive
 public import Index
-public import Storage_Generational
-public import Store_Primitive
+public import Storage
+public import Store
 public import Tree
 
 extension TreeStorage {

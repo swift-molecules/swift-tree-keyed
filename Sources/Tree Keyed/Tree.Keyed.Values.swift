@@ -1,5 +1,5 @@
-public import Storage_Generational
-public import Store_Primitive
+public import Storage
+public import Store
 
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 

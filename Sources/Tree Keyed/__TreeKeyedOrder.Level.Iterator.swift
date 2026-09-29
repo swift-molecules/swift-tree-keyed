@@ -1,16 +1,18 @@
 public import Buffer_Ring_Primitive
-public import Column
-internal import Iterator_Primitive
-internal import Iterator
+public import Memory
+public import Memory_Allocator
+public import Storage
+public import Buffer
+public import Store
+public import Iterator
+
 public import Ownership_Shared_Primitive
 public import Queue
-public import Storage_Generational
-public import Store_Primitive
 public import Tree
 
 extension __TreeKeyedOrder.Level {
 
-    public struct Iterator<S: __TreeKeyedStorage>: Iterator_Primitive.Iterator.`Protocol`
+    public struct Iterator<S: __TreeKeyedStorage>: Iterator::Iterator.`Protocol`
     where S.Element: Copyable {
         @usableFromInline
         let tree: __Tree<S>
@@ -18,14 +20,14 @@ extension __TreeKeyedOrder.Level {
         @usableFromInline
         var pending:
             __Queue<
-                Ownership.Shared<Store.Generational.Handle, Column.Ring<Store.Generational.Handle>>
+                Ownership.Shared<Store.Generational.Handle, Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Store.Generational.Handle>>.Ring>
             >
 
         @usableFromInline
         init(tree: __Tree<S>) {
             self.tree = tree
             self.pending = __Queue<
-                Ownership.Shared<Store.Generational.Handle, Column.Ring<Store.Generational.Handle>>
+                Ownership.Shared<Store.Generational.Handle, Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Store.Generational.Handle>>.Ring>
             >()
 
             if let rootHandle = tree._rootHandle {

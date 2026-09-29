@@ -1,10 +1,14 @@
-public import Column
+public import Memory
+public import Memory_Allocator
+public import Storage
+public import Buffer
+public import Buffer_Linear_Primitive
+public import Store
+
 public import Dictionary_Ordered_Primitive
-public import Dictionary_Primitive
+public import Dictionary
 public import Hash_Indexed_Primitive
 public import Ownership_Shared_Primitive
-public import Storage_Generational
-public import Store_Primitive
 
 @usableFromInline
 struct __TreeKeyedLinks<Key: Swift.Hashable> {
@@ -13,7 +17,7 @@ struct __TreeKeyedLinks<Key: Swift.Hashable> {
     typealias Children = __DictionaryOrdered<
         Ownership.Shared<
             Hash.Entry<Key, Store.Generational.Handle>,
-            Hash.Indexed<Column.Heap<Hash.Entry<Key, Store.Generational.Handle>>>
+            Hash.Indexed<Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Hash.Entry<Key, Store.Generational.Handle>>>.Linear>
         >
     >
 

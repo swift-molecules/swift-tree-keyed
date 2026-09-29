@@ -1,6 +1,6 @@
-public import Stack_Primitive
-public import Storage_Generational
-public import Store_Primitive
+public import Stack
+public import Storage
+public import Store
 import Tree
 
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {

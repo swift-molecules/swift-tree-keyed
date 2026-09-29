@@ -1,9 +1,13 @@
-public import Column
+public import Memory
+public import Memory_Allocator
+public import Storage
+public import Memory_Allocator_Pool
+public import Memory_Pool
+public import Store
+
 public import Index
 public import Ownership_Shared_Primitive
-public import Storage_Generational
-public import Store_Primitive
-public import Tree_Index
+public import Tree
 
 @usableFromInline
 struct __TreeArena<Element: ~Copyable, ChildLinks>: ~Copyable {
@@ -12,27 +16,27 @@ struct __TreeArena<Element: ~Copyable, ChildLinks>: ~Copyable {
     typealias Slot = __TreeNode<Element, ChildLinks>
 
     @usableFromInline
-    var _column: Ownership.Shared<Slot, Column.Generational<Slot>>
+    var _column: Ownership.Shared<Slot, Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Slot>>
 
     @usableFromInline
     var rootHandle: Store.Generational.Handle?
 
     @inlinable
     package init() {
-        self._column = Ownership.Shared(Column.Generational<Slot>.create(slotCapacity: 1))
+        self._column = Ownership.Shared(Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Slot>.create(slotCapacity: 1))
         self.rootHandle = nil
     }
 
     @inlinable
     package init() where Element: Copyable, ChildLinks: Copyable {
-        self._column = Ownership.Shared(Column.Generational<Slot>.create(slotCapacity: 1))
+        self._column = Ownership.Shared(Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Slot>.create(slotCapacity: 1))
         self.rootHandle = nil
     }
 
     @inlinable
     package init(minimumCapacity: Index<Element>.Count) {
         let slots = Index<Slot>.Count(UInt(Swift.max(Int(bitPattern: minimumCapacity), 1)))
-        self._column = Ownership.Shared(Column.Generational<Slot>.create(slotCapacity: slots))
+        self._column = Ownership.Shared(Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Slot>.create(slotCapacity: slots))
         self.rootHandle = nil
     }
 
@@ -40,7 +44,7 @@ struct __TreeArena<Element: ~Copyable, ChildLinks>: ~Copyable {
     package init(minimumCapacity: Index<Element>.Count)
     where Element: Copyable, ChildLinks: Copyable {
         let slots = Index<Slot>.Count(UInt(Swift.max(Int(bitPattern: minimumCapacity), 1)))
-        self._column = Ownership.Shared(Column.Generational<Slot>.create(slotCapacity: slots))
+        self._column = Ownership.Shared(Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Slot>.create(slotCapacity: slots))
         self.rootHandle = nil
     }
 

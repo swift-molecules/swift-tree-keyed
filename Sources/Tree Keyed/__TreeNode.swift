@@ -1,5 +1,5 @@
-public import Storage_Generational
-public import Store_Primitive
+public import Storage
+public import Store
 
 @usableFromInline
 struct __TreeNode<Element: ~Copyable, ChildLinks>: ~Copyable {

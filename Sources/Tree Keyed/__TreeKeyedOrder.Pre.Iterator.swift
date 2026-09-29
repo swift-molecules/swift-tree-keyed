@@ -1,14 +1,12 @@
-internal import Iterator_Primitive
-internal import Iterator
-public import Stack_Primitive
-internal import Stack
-public import Storage_Generational
-public import Store_Primitive
+public import Iterator
+public import Stack
+public import Storage
+public import Store
 public import Tree
 
 extension __TreeKeyedOrder.Pre {
 
-    public struct Iterator<S: __TreeKeyedStorage>: ~Copyable, Iterator_Primitive.Iterator.`Protocol`
+    public struct Iterator<S: __TreeKeyedStorage>: ~Copyable, Iterator::Iterator.`Protocol`
     where S.Element: Copyable {
         @usableFromInline
         let tree: __Tree<S>
