@@ -175,7 +175,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element: ~Copyable, Key: Swift.Hashable>(
-        minimumCapacity: Index.Index<Element>.Count
+        minimumCapacity: Index::Index<Element>.Count
     ) where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>(minimumCapacity: minimumCapacity))
     }
@@ -188,7 +188,7 @@ extension __Tree where S: ~Copyable {
 
     @inlinable
     public init<Element, Key: Swift.Hashable>(
-        minimumCapacity: Index.Index<Element>.Count
+        minimumCapacity: Index::Index<Element>.Count
     ) where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>(minimumCapacity: minimumCapacity))
     }
