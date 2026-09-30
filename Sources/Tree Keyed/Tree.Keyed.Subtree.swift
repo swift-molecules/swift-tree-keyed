@@ -5,11 +5,11 @@ public import Store
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
     @inlinable
-    public func subtree(at keyPath: some Swift.Sequence<Key>) -> Tree<Value>.Keyed<Key>? {
+    public func subtree(at keyPath: some Swift.Sequence<Key>) -> __Tree<TreeStorage.Keyed<Value, Key>>? {
         guard let pos = position(at: keyPath) else { return nil }
         guard let sourceHandle = _liveHandle(pos) else { return nil }
 
-        var result = Tree<Value>.Keyed<Key>()
+        var result = __Tree<TreeStorage.Keyed<Value, Key>>()
 
         let rootDest = result._insertNode(_value(of: sourceHandle), parent: nil)
         result._rootHandle = rootDest

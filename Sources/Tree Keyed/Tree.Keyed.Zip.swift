@@ -4,10 +4,10 @@ public import Store
 
 @inlinable
 public func zip<Key: Swift.Hashable, A: Copyable, B: Copyable>(
-    _ lhs: Tree<A>.Keyed<Key>,
-    _ rhs: Tree<B>.Keyed<Key>
-) -> Tree<(A, B)>.Keyed<Key> {
-    var result = Tree<(A, B)>.Keyed<Key>()
+    _ lhs: __Tree<TreeStorage.Keyed<A, Key>>,
+    _ rhs: __Tree<TreeStorage.Keyed<B, Key>>
+) -> __Tree<TreeStorage.Keyed<(A, B), Key>> {
+    var result = __Tree<TreeStorage.Keyed<(A, B), Key>>()
 
     guard let lhsRoot = lhs._rootHandle, let rhsRoot = rhs._rootHandle else {
         return result

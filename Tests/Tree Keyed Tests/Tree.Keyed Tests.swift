@@ -4,7 +4,7 @@ import Index_Test_Support
 
 @testable import Tree_Keyed
 
-private typealias KeyedInsertPosition = Tree<Int>.Keyed<String>.Insert.Position
+private typealias KeyedInsertPosition = __Tree<TreeStorage.Keyed<Int, String>>.Insert.Position
 
 @Suite
 struct `Tree.Keyed Tests` {
@@ -18,7 +18,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `empty tree has nil root and zero count`() {
-        let tree = Tree<Int>.Keyed<String>()
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>()
         #expect(tree.isEmpty)
         #expect(tree.count == 0)
         #expect(tree.root == nil)
@@ -27,7 +27,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `insert root stores value and updates count`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(42, at: KeyedInsertPosition.root)
 
         #expect(!tree.isEmpty)
@@ -39,7 +39,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `insert children by key stores values at correct positions`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let left = try tree.insert(1, at: .child(of: root, key: "left"))
         let right = try tree.insert(2, at: .child(of: root, key: "right"))
@@ -52,7 +52,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `remove leaf returns value and decrements count`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let child = try tree.insert(1, at: .child(of: root, key: "child"))
 
@@ -64,7 +64,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `remove subtree removes all descendant nodes`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let child = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: child, key: "b"))
@@ -78,7 +78,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `clear empties tree and resets root`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         _ = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: root, key: "b"))
@@ -91,7 +91,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `height increases with depth`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         #expect(tree.height == 0)
 
@@ -104,7 +104,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `update replaces value at position`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
 
         try tree.update(at: root, 99)
@@ -113,7 +113,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `parent returns parent position or nil for root`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let child = try tree.insert(1, at: .child(of: root, key: "a"))
 
@@ -123,7 +123,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `child returns position for existing key or nil`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let left = try tree.insert(1, at: .child(of: root, key: "left"))
         let right = try tree.insert(2, at: .child(of: root, key: "right"))
@@ -135,7 +135,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `key returns parent key or nil for root`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let child = try tree.insert(1, at: .child(of: root, key: "mykey"))
 
@@ -145,7 +145,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `isLeaf returns true for childless nodes`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         #expect(tree.isLeaf(root))
 
@@ -156,7 +156,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `childCount returns number of direct children`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         #expect(tree.child.count(of: root) == 0)
 
@@ -168,7 +168,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `forEachChild iterates children in insertion order`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         _ = try tree.insert(1, at: .child(of: root, key: "x"))
         _ = try tree.insert(2, at: .child(of: root, key: "y"))
@@ -189,7 +189,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `keyPath reconstructs path from root to node`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let a = try tree.insert(1, at: .child(of: root, key: "a"))
         let b = try tree.insert(2, at: .child(of: a, key: "b"))
@@ -203,7 +203,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `position at key path resolves to correct node`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let a = try tree.insert(1, at: .child(of: root, key: "a"))
         let b = try tree.insert(2, at: .child(of: a, key: "b"))
@@ -217,7 +217,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `value at key path returns stored value`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let a = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: a, key: "b"))
@@ -230,7 +230,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `update at key path replaces value`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let a = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: a, key: "b"))
@@ -241,7 +241,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `insert at key path creates intermediate nodes`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         _ = try tree.insert(0, at: KeyedInsertPosition.root)
 
         let pos = try tree.insert(42, at: ["a", "b", "c"]) { _ in -1 }
@@ -254,7 +254,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `insert at key path creates root when tree is empty`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
 
         let pos = try tree.insert(42, at: ["a"]) { _ in 0 }
         #expect(tree.peek(at: pos) == 42)
@@ -315,7 +315,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `mapValues transforms all values preserving structure`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(1, at: KeyedInsertPosition.root)
         _ = try tree.insert(2, at: .child(of: root, key: "a"))
         _ = try tree.insert(3, at: .child(of: root, key: "b"))
@@ -326,7 +326,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `mapValues preserves key path structure`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let a = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: a, key: "b"))
@@ -338,7 +338,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `mapValues with key path includes path in transform`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let a = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: a, key: "b"))
@@ -368,8 +368,8 @@ extension `Tree.Keyed Tests`.Unit {
 
 extension `Tree.Keyed Tests`.Unit {
 
-    private func makeTestTree() throws -> Tree<Int>.Keyed<String> {
-        var tree = Tree<Int>.Keyed<String>()
+    private func makeTestTree() throws -> __Tree<TreeStorage.Keyed<Int, String>> {
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let left = try tree.insert(1, at: .child(of: root, key: "L"))
         _ = try tree.insert(2, at: .child(of: root, key: "R"))
@@ -383,7 +383,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `insert throws rootOccupied when root already exists`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         _ = try tree.insert(1, at: KeyedInsertPosition.root)
 
         #expect {
@@ -398,7 +398,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `insert throws keyOccupied when child key exists`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         _ = try tree.insert(1, at: .child(of: root, key: "child"))
 
@@ -418,7 +418,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `remove throws cannotRemoveNonLeaf for node with children`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         _ = try tree.insert(1, at: .child(of: root, key: "child"))
 
@@ -426,7 +426,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
             try tree.remove(at: root)
         } throws: { error in
 
-            guard let e = error as? Tree<Int>.Error,
+            guard let e = error as? __TreeError,
                 case .cannotRemoveNonLeaf = e
             else { return false }
             return true
@@ -435,7 +435,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `stale position returns nil for peek after remove`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let child = try tree.insert(1, at: .child(of: root, key: "a"))
 
@@ -445,7 +445,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `stale position returns nil for navigation after remove`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let child = try tree.insert(1, at: .child(of: root, key: "a"))
 
@@ -456,7 +456,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `stale position throws invalidPosition on insert`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let child = try tree.insert(1, at: .child(of: root, key: "a"))
 
@@ -474,7 +474,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `empty tree traversal produces no values`() {
-        let tree = Tree<Int>.Keyed<String>()
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>()
         var count = 0
         tree.forEach.preOrder { _ in count += 1 }
         #expect(count == 0)
@@ -483,7 +483,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `single node traversal produces one value for all orders`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         _ = try tree.insert(42, at: KeyedInsertPosition.root)
         #expect(tree.preOrder.collect() == [42])
         #expect(tree.postOrder.collect() == [42])
@@ -492,7 +492,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `compactMapValues drops entire tree when root is filtered`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(1, at: KeyedInsertPosition.root)
         _ = try tree.insert(2, at: .child(of: root, key: "a"))
         _ = try tree.insert(3, at: .child(of: root, key: "b"))
@@ -506,7 +506,7 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `copy-on-write preserves original after mutation of copy`() throws {
-        var tree1 = Tree<Int>.Keyed<String>()
+        var tree1 = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree1.insert(0, at: KeyedInsertPosition.root)
         _ = try tree1.insert(1, at: .child(of: root, key: "a"))
 
@@ -520,12 +520,12 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `zip produces structural intersection of two trees`() throws {
-        var lhs = Tree<Int>.Keyed<String>()
+        var lhs = __Tree<TreeStorage.Keyed<Int, String>>()
         let lRoot = try lhs.insert(1, at: KeyedInsertPosition.root)
         _ = try lhs.insert(2, at: .child(of: lRoot, key: "a"))
         _ = try lhs.insert(3, at: .child(of: lRoot, key: "b"))
 
-        var rhs = Tree<String>.Keyed<String>()
+        var rhs = __Tree<TreeStorage.Keyed<String, String>>()
         let rRoot = try rhs.insert("x", at: KeyedInsertPosition.root)
         _ = try rhs.insert("y", at: .child(of: rRoot, key: "a"))
         _ = try rhs.insert("z", at: .child(of: rRoot, key: "b"))
@@ -545,12 +545,12 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `zip drops non-overlapping branches`() throws {
-        var lhs = Tree<Int>.Keyed<String>()
+        var lhs = __Tree<TreeStorage.Keyed<Int, String>>()
         let lRoot = try lhs.insert(1, at: KeyedInsertPosition.root)
         _ = try lhs.insert(2, at: .child(of: lRoot, key: "a"))
         _ = try lhs.insert(3, at: .child(of: lRoot, key: "b"))
 
-        var rhs = Tree<Int>.Keyed<String>()
+        var rhs = __Tree<TreeStorage.Keyed<Int, String>>()
         let rRoot = try rhs.insert(10, at: KeyedInsertPosition.root)
         _ = try rhs.insert(20, at: .child(of: rRoot, key: "a"))
 
@@ -560,9 +560,9 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `zip with empty tree produces empty result`() throws {
-        var lhs = Tree<Int>.Keyed<String>()
+        var lhs = __Tree<TreeStorage.Keyed<Int, String>>()
         _ = try lhs.insert(1, at: KeyedInsertPosition.root)
-        let rhs = Tree<Int>.Keyed<String>()
+        let rhs = __Tree<TreeStorage.Keyed<Int, String>>()
 
         let zipped = zip(lhs, rhs)
         #expect(zipped.isEmpty)
@@ -570,7 +570,7 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `prune removes matching subtrees and preserves others`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         let a = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: a, key: "deep"))
@@ -585,7 +585,7 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `prune entire tree removes all nodes`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         _ = try tree.insert(1, at: KeyedInsertPosition.root)
 
         tree.prune { _ in true }
@@ -594,7 +594,7 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `prune with false predicate preserves all nodes`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         _ = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: root, key: "b"))
@@ -605,7 +605,7 @@ extension `Tree.Keyed Tests`.Integration {
 
     @Test
     func `compactMapValues keeps surviving branches with transformed values`() throws {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         let root = try tree.insert(0, at: KeyedInsertPosition.root)
         _ = try tree.insert(1, at: .child(of: root, key: "a"))
         _ = try tree.insert(2, at: .child(of: root, key: "b"))
@@ -615,8 +615,8 @@ extension `Tree.Keyed Tests`.Integration {
     }
 }
 
-private func makeGraphParityTree() throws -> Tree<Int>.Keyed<String> {
-    var tree = Tree<Int>.Keyed<String>()
+private func makeGraphParityTree() throws -> __Tree<TreeStorage.Keyed<Int, String>> {
+    var tree = __Tree<TreeStorage.Keyed<Int, String>>()
     let root = try tree.insert(0, at: KeyedInsertPosition.root)
     let a = try tree.insert(1, at: .child(of: root, key: "a"))
     _ = try tree.insert(10, at: .child(of: a, key: "x"))
@@ -737,7 +737,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `forEach on empty tree does not call body`() {
-        let tree = Tree<Int>.Keyed<String>()
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>()
         var count = 0
         tree.forEach { (_: [String], _: Int) in count += 1 }
         #expect(count == 0)
@@ -784,7 +784,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `values along on empty tree returns empty sequence`() {
-        let tree = Tree<Int>.Keyed<String>()
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>()
 
         let result = Swift.Array(tree.values(along: ["a", "b"]))
         #expect(result.isEmpty)
@@ -833,7 +833,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `init with rootValue creates single-node tree`() {
-        let tree = Tree<Int>.Keyed<String>(rootValue: 42)
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>(rootValue: 42)
         #expect(!tree.isEmpty)
         #expect(tree.count == 1)
         #expect(tree.root != nil)
@@ -842,23 +842,23 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `rootValue returns root value and nil for empty tree`() throws {
-        let empty = Tree<Int>.Keyed<String>()
+        let empty = __Tree<TreeStorage.Keyed<Int, String>>()
         #expect(empty.rootValue == nil)
 
-        let tree = Tree<Int>.Keyed<String>(rootValue: 99)
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>(rootValue: 99)
         #expect(tree.rootValue == 99)
     }
 
     @Test
     func `rootValue setter updates existing root`() {
-        var tree = Tree<Int>.Keyed<String>(rootValue: 1)
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>(rootValue: 1)
         tree.rootValue = 2
         #expect(tree.rootValue == 2)
     }
 
     @Test
     func `rootValue setter creates root when tree is empty`() {
-        var tree = Tree<Int>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
         tree.rootValue = 42
         #expect(tree.rootValue == 42)
         #expect(tree.count == 1)
@@ -866,7 +866,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `sparse subscript get returns value at key path`() throws {
-        var tree = Tree<Int?>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int?, String>>()
         try tree.insert(10, at: ["a", "x"], intermediateValue: { _ in nil })
         try tree.insert(20, at: ["b"], intermediateValue: { _ in nil })
 
@@ -877,7 +877,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `sparse subscript set creates intermediates with nil`() {
-        var tree = Tree<Int?>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int?, String>>()
         tree[["a", "b", "c"]] = 42
 
         #expect(tree[["a", "b", "c"]] == 42)
@@ -888,7 +888,7 @@ extension `Tree.Keyed Tests`.Unit {
 
     @Test
     func `sparse subscript optional chaining mutation works`() {
-        var tree = Tree<[Int]?>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<[Int]?, String>>()
         tree[["data"]] = [1, 2, 3]
 
         tree[["data"]]?.append(4)
@@ -913,14 +913,14 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `read-only subscript returns nil for missing path`() {
-        let tree = Tree<Int>.Keyed<String>(rootValue: 1)
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>(rootValue: 1)
         let result: Int? = tree[["nonexistent"]]
         #expect(result == nil)
     }
 
     @Test
     func `sparse subscript set at empty key path creates root`() {
-        var tree = Tree<Int?>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<Int?, String>>()
         #expect(tree.isEmpty)
 
         tree[[] as [String]] = 42
@@ -930,7 +930,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `sparse insert at empty key path updates existing root`() throws {
-        var tree = Tree<Int?>.Keyed<String>(rootValue: 1)
+        var tree = __Tree<TreeStorage.Keyed<Int?, String>>(rootValue: 1)
         let pos = try tree.insert(Optional(99), at: [] as [String])
         #expect(tree.rootValue == 99)
         #expect(pos == tree.root)
@@ -938,13 +938,13 @@ extension `Tree.Keyed Tests`.`Edge Case` {
 
     @Test
     func `subtree returns nil for nonexistent path`() {
-        let tree = Tree<Int>.Keyed<String>(rootValue: 1)
+        let tree = __Tree<TreeStorage.Keyed<Int, String>>(rootValue: 1)
         #expect(tree.subtree(at: ["missing"]) == nil)
     }
 
     @Test
     func `children of root returns snapshot safe for mutation`() throws {
-        var tree = Tree<Int>.Keyed<String>(rootValue: 0)
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>(rootValue: 0)
         let root = tree.root!
         try tree.insert(1, at: .child(of: root, key: "a"))
         try tree.insert(2, at: .child(of: root, key: "b"))
@@ -968,7 +968,7 @@ extension `Tree.Keyed Tests`.Integration {
     @Test
     func `sparse graph workflow matches Graph usage pattern`() {
 
-        var tree = Tree<String?>.Keyed<String>()
+        var tree = __Tree<TreeStorage.Keyed<String?, String>>()
 
         tree[["suite", "testA"]] = "test A"
         tree[["suite", "testB"]] = "test B"
@@ -1007,11 +1007,9 @@ extension `Tree.Keyed Tests`.Unit {
     @Test
     func `P4 Error flows from the column and resolves per instantiation`() {
 
-        let _: __TreeError.Type = Tree<Int>.Error.self
+        let _: __TreeKeyedError<String>.Type = __Tree<TreeStorage.Keyed<Int, String>>.Error.self
 
-        let _: __TreeKeyedError<String>.Type = Tree<Int>.Keyed<String>.Error.self
-
-        let keyed: Tree<Int>.Keyed<String>.Error = .keyOccupied("k")
+        let keyed: __Tree<TreeStorage.Keyed<Int, String>>.Error = .keyOccupied("k")
         var matchedKeyOccupied = false
         switch keyed {
         case .invalidPosition, .rootOccupied, .cannotRemoveNonLeaf:
@@ -1022,7 +1020,6 @@ extension `Tree.Keyed Tests`.Unit {
         }
         #expect(matchedKeyOccupied)
 
-        #expect(Tree<Int>.Error.self == __TreeError.self)
-        #expect(Tree<Int>.Keyed<String>.Error.self == __TreeKeyedError<String>.self)
+        #expect(__Tree<TreeStorage.Keyed<Int, String>>.Error.self == __TreeKeyedError<String>.self)
     }
 }

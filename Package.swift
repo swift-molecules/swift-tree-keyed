@@ -97,6 +97,7 @@ let package = Package(
                     package: "swift-dictionary-ordered"
                 ),
                 .product(name: "Hash Indexed Primitive", package: "swift-hash-table"),
+                .product(name: "Hash Table Primitive", package: "swift-hash-table"),
                 .product(
                     name: "Ownership Shared Primitive",
                     package: "swift-ownership-shared"

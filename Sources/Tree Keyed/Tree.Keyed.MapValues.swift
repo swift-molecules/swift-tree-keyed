@@ -5,8 +5,8 @@ public import Store
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
     @inlinable
-    public func mapValues<U>(_ transform: (Value) -> U) -> Tree<U>.Keyed<Key> {
-        var result = Tree<U>.Keyed<Key>()
+    public func mapValues<U>(_ transform: (Value) -> U) -> __Tree<TreeStorage.Keyed<U, Key>> {
+        var result = __Tree<TreeStorage.Keyed<U, Key>>()
         guard let rootHandle = _rootHandle else { return result }
 
         var pending = Stack<
@@ -40,7 +40,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> U
-    ) throws(E) -> Tree<U>.Keyed<Key> {
+    ) throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
         try compactMapValues { path, value throws(E) -> U? in
             try transform(path, value)
         }
@@ -49,7 +49,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> (U, recursivelyApply: Bool)
-    ) throws(E) -> Tree<U>.Keyed<Key> {
+    ) throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
         try compactMapValues { path, value throws(E) in
             try transform(path, value) as (U, recursivelyApply: Bool)?
         }
@@ -58,7 +58,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> U?
-    ) throws(E) -> Tree<U>.Keyed<Key> {
+    ) throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
         try compactMapValues { path, value throws(E) in
             try transform(path, value).map { ($0, recursivelyApply: false) }
         }
@@ -67,8 +67,8 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) throws(E) -> (U, recursivelyApply: Bool)?
-    ) throws(E) -> Tree<U>.Keyed<Key> {
-        var result = Tree<U>.Keyed<Key>()
+    ) throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
+        var result = __Tree<TreeStorage.Keyed<U, Key>>()
         guard let rootHandle = _rootHandle else { return result }
 
         var pending = Stack<
@@ -125,8 +125,8 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     }
 
     @inlinable
-    public func compactMapValues<U>(_ transform: (Value) -> U?) -> Tree<U>.Keyed<Key> {
-        var result = Tree<U>.Keyed<Key>()
+    public func compactMapValues<U>(_ transform: (Value) -> U?) -> __Tree<TreeStorage.Keyed<U, Key>> {
+        var result = __Tree<TreeStorage.Keyed<U, Key>>()
         guard let rootHandle = _rootHandle else { return result }
 
         guard let rootValue = transform(_value(of: rootHandle)) else { return result }
@@ -159,7 +159,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> U
-    ) async throws(E) -> Tree<U>.Keyed<Key> {
+    ) async throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
         try await compactMapValues { path, value async throws(E) -> U? in
             try await transform(path, value)
         }
@@ -168,7 +168,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func mapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> (U, recursivelyApply: Bool)
-    ) async throws(E) -> Tree<U>.Keyed<Key> {
+    ) async throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
         try await compactMapValues { path, value async throws(E) in
             try await transform(path, value) as (U, recursivelyApply: Bool)?
         }
@@ -177,7 +177,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> U?
-    ) async throws(E) -> Tree<U>.Keyed<Key> {
+    ) async throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
         try await compactMapValues { path, value async throws(E) in
             try await transform(path, value).map { ($0, recursivelyApply: false) }
         }
@@ -186,8 +186,8 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public func compactMapValues<U, E>(
         _ transform: ([Key], Value) async throws(E) -> (U, recursivelyApply: Bool)?
-    ) async throws(E) -> Tree<U>.Keyed<Key> {
-        var result = Tree<U>.Keyed<Key>()
+    ) async throws(E) -> __Tree<TreeStorage.Keyed<U, Key>> {
+        var result = __Tree<TreeStorage.Keyed<U, Key>>()
         guard let rootHandle = _rootHandle else { return result }
 
         var pending = Stack<
