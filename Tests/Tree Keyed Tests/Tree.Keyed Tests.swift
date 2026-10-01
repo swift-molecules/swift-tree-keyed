@@ -1023,3 +1023,49 @@ extension `Tree.Keyed Tests`.Unit {
         #expect(__Tree<TreeStorage.Keyed<Int, String>>.Error.self == __TreeKeyedError<String>.self)
     }
 }
+
+extension `Tree.Keyed Tests`.Unit {
+
+    @Test
+    func `subtree keeps the source child key order`() throws {
+        var tree = __Tree<TreeStorage.Keyed<Int, String>>()
+        let root = try tree.insert(0, at: KeyedInsertPosition.root)
+        let a = try tree.insert(1, at: .child(of: root, key: "a"))
+        _ = try tree.insert(12, at: .child(of: a, key: "z"))
+        _ = try tree.insert(10, at: .child(of: a, key: "x"))
+        _ = try tree.insert(11, at: .child(of: a, key: "y"))
+
+        let sub = try #require(tree.subtree(at: ["a"]))
+        let subRoot = try #require(sub.root)
+        var keys: [String] = []
+        var values: [Int] = []
+        sub.children(of: subRoot) { key, position in
+            keys.append(key)
+            if let value = sub.peek(at: position) { values.append(value) }
+        }
+        #expect(keys == ["z", "x", "y"])
+        #expect(values == [12, 10, 11])
+    }
+}
+
+extension `Tree.Keyed Tests`.`Edge Case` {
+
+    @Test
+    func `zip with an empty left tree produces empty result`() throws {
+        let lhs = __Tree<TreeStorage.Keyed<Int, String>>()
+        var rhs = __Tree<TreeStorage.Keyed<Int, String>>()
+        _ = try rhs.insert(1, at: KeyedInsertPosition.root)
+
+        let zipped = zip(lhs, rhs)
+        #expect(zipped.isEmpty)
+    }
+
+    @Test
+    func `zip of two empty trees is empty`() {
+        let lhs = __Tree<TreeStorage.Keyed<Int, String>>()
+        let rhs = __Tree<TreeStorage.Keyed<Int, String>>()
+
+        let zipped = zip(lhs, rhs)
+        #expect(zipped.isEmpty)
+    }
+}
