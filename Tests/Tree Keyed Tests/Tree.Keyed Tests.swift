@@ -649,7 +649,7 @@ extension `Tree.Keyed Tests`.Unit {
     func `forEach with typed throw propagates error`() throws {
         let tree = try makeGraphParityTree()
 
-        struct StopError: Swift.Error {}
+        struct StopError: Swift::Error {}
 
         #expect(throws: StopError.self) {
             try tree.forEach { (_: [String], value: Int) throws(StopError) in
@@ -682,7 +682,7 @@ extension `Tree.Keyed Tests`.Unit {
     func `mapValues with key path and typed throws transforms values`() throws {
         let tree = try makeGraphParityTree()
 
-        struct MapError: Swift.Error {}
+        struct MapError: Swift::Error {}
 
         let result = try tree.mapValues { (path: [String], value: Int) throws(MapError) -> String in
             "\(path.joined(separator: "/")):\(value)"
@@ -728,7 +728,7 @@ extension `Tree.Keyed Tests`.Unit {
     func `values along yields values along valid key path`() throws {
         let tree = try makeGraphParityTree()
 
-        let result = Swift.Array(tree.values(along: ["a", "x"]))
+        let result = Swift::Array(tree.values(along: ["a", "x"]))
         #expect(result == [1, 10] as [Int?])
     }
 }
@@ -775,7 +775,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
     func `values along returns nils after missing key`() throws {
         let tree = try makeGraphParityTree()
 
-        let result = Swift.Array(tree.values(along: ["a", "missing", "deeper"]))
+        let result = Swift::Array(tree.values(along: ["a", "missing", "deeper"]))
         #expect(result.count == 3)
         #expect(result[0] == 1)
         #expect(result[1] == nil)
@@ -786,7 +786,7 @@ extension `Tree.Keyed Tests`.`Edge Case` {
     func `values along on empty tree returns empty sequence`() {
         let tree = __Tree<TreeStorage.Keyed<Int, String>>()
 
-        let result = Swift.Array(tree.values(along: ["a", "b"]))
+        let result = Swift::Array(tree.values(along: ["a", "b"]))
         #expect(result.isEmpty)
     }
 }

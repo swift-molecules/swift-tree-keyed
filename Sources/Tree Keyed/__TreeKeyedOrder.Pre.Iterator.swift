@@ -22,19 +22,22 @@ extension __TreeKeyedOrder.Pre {
                 self.pending.push(rootHandle)
             }
         }
+    }
+}
 
-        @inlinable
-        public mutating func next() -> S.Element? {
-            guard let handle = pending.pop() else { return nil }
+extension __TreeKeyedOrder.Pre.Iterator {
 
-            let value = tree._value(of: handle)
+    @inlinable
+    public mutating func next() -> S.Element? {
+        guard let handle = pending.pop() else { return nil }
 
-            let children = tree._children(of: handle)
-            for i in (0..<children.count).reversed() {
-                pending.push(children[i].handle)
-            }
+        let value = tree._value(of: handle)
 
-            return value
+        let children = tree._children(of: handle)
+        for i in (0..<children.count).reversed() {
+            pending.push(children[i].handle)
         }
+
+        return value
     }
 }

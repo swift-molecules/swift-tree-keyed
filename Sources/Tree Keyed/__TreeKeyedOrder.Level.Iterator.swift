@@ -34,18 +34,21 @@ extension __TreeKeyedOrder.Level {
                 pending.enqueue(rootHandle)
             }
         }
+    }
+}
 
-        @inlinable
-        public mutating func next() -> S.Element? {
-            guard let handle = pending.dequeue() else { return nil }
+extension __TreeKeyedOrder.Level.Iterator {
 
-            let value = tree._value(of: handle)
+    @inlinable
+    public mutating func next() -> S.Element? {
+        guard let handle = pending.dequeue() else { return nil }
 
-            for (_, child) in tree._children(of: handle) {
-                pending.enqueue(child)
-            }
+        let value = tree._value(of: handle)
 
-            return value
+        for (_, child) in tree._children(of: handle) {
+            pending.enqueue(child)
         }
+
+        return value
     }
 }

@@ -3,7 +3,7 @@ public import Storage
 public import Store
 
 @inlinable
-public func zip<Key: Swift.Hashable, A: Copyable, B: Copyable>(
+public func zip<Key: Swift::Hashable, A: Copyable, B: Copyable>(
     _ lhs: __Tree<TreeStorage.Keyed<A, Key>>,
     _ rhs: __Tree<TreeStorage.Keyed<B, Key>>
 ) -> __Tree<TreeStorage.Keyed<(A, B), Key>> {

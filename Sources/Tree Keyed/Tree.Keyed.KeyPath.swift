@@ -1,4 +1,4 @@
-public import Storage
+import Storage
 public import Store
 public import Tree
 
@@ -24,7 +24,7 @@ extension __Tree where S: __TreeKeyedStorage {
     }
 
     @inlinable
-    public func position(at keyPath: some Swift.Sequence<Key>) -> Position? {
+    public func position(at keyPath: some Swift::Sequence<Key>) -> Position? {
         guard let rootHandle = _rootHandle else { return nil }
 
         var current = rootHandle
@@ -42,7 +42,7 @@ extension __Tree where S: __TreeKeyedStorage {
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
     @inlinable
-    public func value(at keyPath: some Swift.Sequence<Key>) -> Value? {
+    public func value(at keyPath: some Swift::Sequence<Key>) -> Value? {
         guard let pos = position(at: keyPath) else { return nil }
         return peek(at: pos)
     }
@@ -50,7 +50,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
     @inlinable
     public mutating func update(
         _ newValue: Value,
-        at keyPath: some Swift.Sequence<Key>
+        at keyPath: some Swift::Sequence<Key>
     ) throws(Self.Error) {
         guard let pos = position(at: keyPath) else {
             throw .invalidPosition

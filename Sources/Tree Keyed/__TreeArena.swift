@@ -2,7 +2,7 @@ public import Memory
 public import Memory_Allocator
 public import Storage
 public import Memory_Allocator_Pool
-public import Memory_Pool
+import Memory_Pool
 public import Store
 
 public import Index
@@ -35,7 +35,7 @@ struct __TreeArena<Element: ~Copyable, ChildLinks>: ~Copyable {
 
     @inlinable
     package init(minimumCapacity: Index<Element>.Count) {
-        let slots = Index<Slot>.Count(UInt(Swift.max(Int(bitPattern: minimumCapacity), 1)))
+        let slots = Index<Slot>.Count(UInt(Swift::max(Int(bitPattern: minimumCapacity), 1)))
         self._column = Ownership.Shared(Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Slot>.create(slotCapacity: slots))
         self.rootHandle = nil
     }
@@ -43,7 +43,7 @@ struct __TreeArena<Element: ~Copyable, ChildLinks>: ~Copyable {
     @inlinable
     package init(minimumCapacity: Index<Element>.Count)
     where Element: Copyable, ChildLinks: Copyable {
-        let slots = Index<Slot>.Count(UInt(Swift.max(Int(bitPattern: minimumCapacity), 1)))
+        let slots = Index<Slot>.Count(UInt(Swift::max(Int(bitPattern: minimumCapacity), 1)))
         self._column = Ownership.Shared(Storage<Memory.Allocator<Memory.Heap>.Pool>.Generational<Slot>.create(slotCapacity: slots))
         self.rootHandle = nil
     }

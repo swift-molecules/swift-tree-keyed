@@ -8,7 +8,7 @@ public import Tree
 
 extension TreeStorage {
 
-    public struct Keyed<Element: ~Copyable, Key: Swift.Hashable>: ~Copyable {
+    public struct Keyed<Element: ~Copyable, Key: Swift::Hashable>: ~Copyable {
 
         public typealias Address = Key
 
@@ -168,33 +168,33 @@ extension TreeStorage.Keyed: Sendable where Element: Sendable, Key: Sendable {}
 extension __Tree where S: ~Copyable {
 
     @inlinable
-    public init<Element: ~Copyable, Key: Swift.Hashable>()
+    public init<Element: ~Copyable, Key: Swift::Hashable>()
     where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>())
     }
 
     @inlinable
-    public init<Element: ~Copyable, Key: Swift.Hashable>(
+    public init<Element: ~Copyable, Key: Swift::Hashable>(
         minimumCapacity: Index::Index<Element>.Count
     ) where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>(minimumCapacity: minimumCapacity))
     }
 
     @inlinable
-    public init<Element, Key: Swift.Hashable>()
+    public init<Element, Key: Swift::Hashable>()
     where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>())
     }
 
     @inlinable
-    public init<Element, Key: Swift.Hashable>(
+    public init<Element, Key: Swift::Hashable>(
         minimumCapacity: Index::Index<Element>.Count
     ) where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>(minimumCapacity: minimumCapacity))
     }
 
     @inlinable
-    public init<Element, Key: Swift.Hashable>(rootValue: consuming Element)
+    public init<Element, Key: Swift::Hashable>(rootValue: consuming Element)
     where S == TreeStorage.Keyed<Element, Key> {
         self.init(storage: TreeStorage.Keyed<Element, Key>())
         let handle = _storage._insertNode(rootValue, parent: nil)

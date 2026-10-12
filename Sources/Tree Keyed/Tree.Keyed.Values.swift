@@ -1,11 +1,11 @@
-public import Storage
+import Storage
 public import Store
 
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
     @inlinable
     public func values(
-        along keyPath: some Swift.Sequence<Key>
+        along keyPath: some Swift::Sequence<Key>
     ) -> [Value?] {
         guard let rootHandle = _rootHandle else { return [] }
 

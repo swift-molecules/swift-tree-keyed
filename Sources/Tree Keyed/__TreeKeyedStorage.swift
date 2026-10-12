@@ -1,9 +1,9 @@
-public import Storage
+import Storage
 public import Store
 public import Tree
 
 public protocol __TreeKeyedStorage: __TreeStorage
-where Address: Swift.Hashable, Error == __TreeKeyedError<Address> {
+where Address: Swift::Hashable, Error == __TreeKeyedError<Address> {
 
     func _parentKey(of handle: Store.Generational.Handle) -> Address?
 

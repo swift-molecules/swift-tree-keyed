@@ -32,11 +32,14 @@ extension __TreeKeyedOrder.Post {
                 }
             }
         }
+    }
+}
 
-        @inlinable
-        public mutating func next() -> S.Element? {
-            guard let handle = output.pop() else { return nil }
-            return tree._value(of: handle)
-        }
+extension __TreeKeyedOrder.Post.Iterator {
+
+    @inlinable
+    public mutating func next() -> S.Element? {
+        guard let handle = output.pop() else { return nil }
+        return tree._value(of: handle)
     }
 }

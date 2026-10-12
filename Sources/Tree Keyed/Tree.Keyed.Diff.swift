@@ -1,4 +1,4 @@
-public struct __TreeKeyedDiff<Key: Swift.Hashable, Value: Equatable> {
+public struct __TreeKeyedDiff<Key: Swift::Hashable, Value: Equatable> {
 
     public let operations: [Operation]
 

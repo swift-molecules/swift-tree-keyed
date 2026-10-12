@@ -12,7 +12,7 @@ public import Hash_Table_Primitive
 public import Ownership_Shared_Primitive
 
 @usableFromInline
-struct __TreeKeyedLinks<Key: Swift.Hashable> {
+struct __TreeKeyedLinks<Key: Swift::Hashable> {
 
     @usableFromInline
     typealias Children = __DictionaryOrdered<

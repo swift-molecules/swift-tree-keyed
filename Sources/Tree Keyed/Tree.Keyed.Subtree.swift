@@ -5,7 +5,7 @@ public import Store
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
 
     @inlinable
-    public func subtree(at keyPath: some Swift.Sequence<Key>) -> __Tree<TreeStorage.Keyed<Value, Key>>? {
+    public func subtree(at keyPath: some Swift::Sequence<Key>) -> __Tree<TreeStorage.Keyed<Value, Key>>? {
         guard let pos = position(at: keyPath) else { return nil }
         guard let sourceHandle = _liveHandle(pos) else { return nil }
 
