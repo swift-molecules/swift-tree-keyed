@@ -1,12 +1,11 @@
+public import Index
 public import Memory
 public import Memory_Allocator
-public import Storage
 public import Memory_Allocator_Pool
 import Memory_Pool
-public import Store
-
-public import Index
 public import Ownership_Shared_Primitive
+public import Storage
+public import Store
 public import Tree
 
 @usableFromInline

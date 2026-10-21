@@ -1,5 +1,5 @@
-import Testing
 import Index_Test_Support
+import Testing
 
 @testable import Tree_Keyed
 

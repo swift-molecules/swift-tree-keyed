@@ -1,6 +1,6 @@
+import Index_Test_Support
 import Sequence
 import Testing
-import Index_Test_Support
 
 @testable import Tree_Keyed
 

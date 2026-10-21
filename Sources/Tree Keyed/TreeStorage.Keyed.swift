@@ -1,5 +1,5 @@
-public import Dictionary_Ordered
 public import Dictionary
+public import Dictionary_Ordered
 public import Hash_Indexed_Primitive
 public import Index
 public import Storage

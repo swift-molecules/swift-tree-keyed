@@ -1,15 +1,14 @@
-public import Memory
-public import Memory_Allocator
-public import Storage
 public import Buffer
 public import Buffer_Linear_Primitive
-public import Store
-
-public import Dictionary_Ordered_Primitive
 public import Dictionary
+public import Dictionary_Ordered_Primitive
 public import Hash_Indexed_Primitive
 public import Hash_Table_Primitive
+public import Memory
+public import Memory_Allocator
 public import Ownership_Shared_Primitive
+public import Storage
+public import Store
 
 @usableFromInline
 struct __TreeKeyedLinks<Key: Swift::Hashable> {
