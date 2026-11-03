@@ -1,0 +1,17 @@
+# swift-tree-keyed
+
+Use this package when each child of a node is named by a hashable key and you address nodes by key path from the root, as in nested configuration, test suites grouped by name, or path-like hierarchies. Start from `__Tree<TreeStorage.Keyed<Element, Key>>`; with an optional `Element` it also works as a sparse tree whose subscript creates missing nodes. Use swift-tree-column instead when children are ordered by index, swift-tree-n when every node has a fixed number of child slots, and swift-tree for code that should work over any tree layout.
+
+## Laws
+
+- Keys are unique among siblings, and a node's children keep the order in which they were inserted. `children(of:)`, `forEach`, `preOrder`, `postOrder`, `levelOrder`, `subtree(at:)`, `mapValues` and `compactMapValues` all follow that order.
+- A node's key path is the keys from the root down to it, so the root's key path is `[]` and `key(of:)` returns `nil` for the root. Positions are generational: after a node is removed, `key(of:)`, `keyPath(to:)` and `children(of:)` return `nil` for its old position, and inserting a child under it fails with `.invalidPosition`. Inserting at a key that is already taken fails with `.keyOccupied(key)`. `children(of:)` returns a snapshot, so it is safe to mutate the tree while looping over it.
+- `insert(_:at:intermediateValue:)` adds or replaces a value. It creates any missing node on the path, including the root of an empty tree, with `intermediateValue(key)`, leaves existing nodes on the way unchanged, and overwrites the last node if it already exists. An empty key path is a precondition failure.
+- When `Element` is optional, the key-path subscript and `insert(_:at:)` fill missing nodes on the path with `nil`. An empty key path creates the root or overwrites it. A read returns `nil` both when the node is missing and when it stores `nil`. Assigning `nil` stores `nil` and does not remove the node.
+- Setting `rootValue` creates the root when the tree is empty. Assigning `nil` to it does nothing.
+- `values(along:)` returns one entry per key, not counting the root. Every entry from the first missing key onward is `nil`, and an empty tree returns `[]`.
+- When the transform passed to `mapValues` or `compactMapValues` returns `nil`, that node and its whole subtree are dropped, and a `nil` at the root gives an empty tree. Returning `recursivelyApply: true` gives the same value to every descendant of that node, and the transform is not called for those descendants. The async variants wait for each transform to finish before calling the next.
+- `subtree(at:)`, `mapValues`, `compactMapValues`, `zip` and `diff` build new, independent trees. Later changes to the source tree do not show up in them, and a copy of a tree is not affected by changes to the original. The `preOrder`, `postOrder` and `levelOrder` sequences go over the tree as it was when the sequence was made.
+- `zip` keeps only the key paths that both trees have, pairing their values as `(lhs, rhs)`. If either tree is empty, the result is empty.
+- `prune(where:)` removes every node that matches, together with its whole subtree, and never checks that node's descendants. If the root matches, the tree ends up empty.
+- `diff(from:to:)` matches nodes by key path, not by position, and always matches the two roots. A matched node whose value changed (compared with `==`) gives `.modified`. A key path that exists in only one tree gives one `.removed` or `.added` operation for each node in that subtree. Two equal trees, or two empty trees, give an empty diff.
