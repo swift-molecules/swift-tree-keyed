@@ -1,17 +1,17 @@
 public import Tree
 
 public enum __TreeKeyedInsert<Key: Swift::Hashable> {
+}
 
+extension __TreeKeyedInsert {
     public typealias Position = __TreeKeyedInsertPosition<Key>
 }
 
 extension __Tree where S: __TreeKeyedStorage {
-
     public typealias Insert = __TreeKeyedInsert<S.Address>
 }
 
 extension __Tree where S: __TreeKeyedStorage {
-
     @inlinable
     @discardableResult
     public mutating func insert(
@@ -48,7 +48,6 @@ extension __Tree where S: __TreeKeyedStorage {
 }
 
 extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
-
     @inlinable
     public var rootValue: Value? {
         get {
