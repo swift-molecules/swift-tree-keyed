@@ -34,7 +34,7 @@ extension __TreeKeyedOrder.Pre.Iterator {
         let value = tree._value(of: handle)
 
         let children = tree._children(of: handle)
-        (0..<children.count).reversed().forEach { i in
+        for i in (0..<children.count).reversed() {
             pending.push(children[i].handle)
         }
 
