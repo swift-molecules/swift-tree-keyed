@@ -29,7 +29,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
             }
 
             let children = _children(of: sourceHandle)
-            for i in (0..<children.count).reversed() {
+            (0..<children.count).reversed().forEach { i in
                 pending.push((children[i].handle, handle, children[i].key))
             }
         }
@@ -106,7 +106,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
             }
 
             let children = _children(of: sourceHandle)
-            for i in (0..<children.count).reversed() {
+            (0..<children.count).reversed().forEach { i in
                 var childPath = path
                 childPath.append(children[i].key)
                 pending.push(
@@ -225,7 +225,7 @@ extension __Tree where S: __TreeKeyedStorage, S.Element: Copyable {
             }
 
             let children = _children(of: sourceHandle)
-            for i in (0..<children.count).reversed() {
+            (0..<children.count).reversed().forEach { i in
                 var childPath = path
                 childPath.append(children[i].key)
                 pending.push(
