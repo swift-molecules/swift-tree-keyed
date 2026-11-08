@@ -7,13 +7,7 @@ public import Store
 public import Tree
 
 extension TreeStorage {
-
     public struct Keyed<Element: ~Copyable, Key: Swift::Hashable>: ~Copyable {
-
-        public typealias Address = Key
-
-        public typealias Error = __TreeKeyedError<Key>
-
         @usableFromInline
         var _arena: __TreeArena<Element, __TreeKeyedLinks<Key>>
 
@@ -38,7 +32,6 @@ extension TreeStorage {
 }
 
 extension TreeStorage.Keyed: __TreeStorage where Element: ~Copyable {
-
     @inlinable
     public var _count: Index<Element>.Count { _arena.count }
 
@@ -143,7 +136,6 @@ extension TreeStorage.Keyed: __TreeStorage where Element: ~Copyable {
 }
 
 extension TreeStorage.Keyed: __TreeKeyedStorage {
-
     @inlinable
     public func _parentKey(of handle: Store.Generational.Handle) -> Key? {
         _arena.withLinks(at: handle) { $0.parentKey }
@@ -166,7 +158,6 @@ extension TreeStorage.Keyed: Copyable where Element: Copyable {}
 extension TreeStorage.Keyed: Sendable where Element: Sendable, Key: Sendable {}
 
 extension __Tree where S: ~Copyable {
-
     @inlinable
     public init<Element: ~Copyable, Key: Swift::Hashable>()
     where S == TreeStorage.Keyed<Element, Key> {
@@ -201,3 +192,8 @@ extension __Tree where S: ~Copyable {
         _storage._rootHandle = handle
     }
 }
+
+extension TreeStorage.Keyed where Element: ~Copyable {
+        public typealias Address = Key
+
+        public typealias Error = __TreeKeyedError<Key>}

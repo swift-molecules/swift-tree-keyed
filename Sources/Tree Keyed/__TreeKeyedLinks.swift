@@ -12,9 +12,6 @@ public import Store
 
 @usableFromInline
 struct __TreeKeyedLinks<Key: Swift::Hashable> {
-
-    @usableFromInline
-    typealias Children = __DictionaryOrdered<
         Ownership.Shared<
             Hash.Entry<Key, Store.Generational.Handle>,
             Hash.Indexed<Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Hash.Entry<Key, Store.Generational.Handle>>>.Linear>
@@ -30,6 +27,11 @@ struct __TreeKeyedLinks<Key: Swift::Hashable> {
         self.children = Children()
         self.parentKey = nil
     }
+}
+
+extension __TreeKeyedLinks {
+    @usableFromInline
+    typealias Children = __DictionaryOrdered<
 }
 
 extension __TreeKeyedLinks: Sendable where Key: Sendable {}
