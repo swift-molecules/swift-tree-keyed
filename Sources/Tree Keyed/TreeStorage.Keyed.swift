@@ -1,8 +1,8 @@
-public import Dictionary
-public import Dictionary_Ordered
-public import Hash_Indexed_Primitive
+import Dictionary
+import Dictionary_Ordered
+import Hash_Indexed_Primitive
 public import Index
-public import Storage
+import Storage
 public import Store
 public import Tree
 
